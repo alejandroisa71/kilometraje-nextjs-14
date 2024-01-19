@@ -11,7 +11,7 @@ export default function RootLayout({
       <body className={`${monserrat.className} antialiased`}>
         {children}
         <footer className=' py-10 flex justify-center items-center'>
-          Hecho con amor ❤ para Empresa Serra 🤦‍♂️
+          Creado por alafama para Empresa Enrique Serra 🤦‍♂️
         </footer>
       </body>
     </html>

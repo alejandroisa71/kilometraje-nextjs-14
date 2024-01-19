@@ -1,6 +1,6 @@
 const DashboardPage = () => {
   return (
-    <div>Dashboard Page</div>
+    <p>Esta pagina es el contenido del dashboard</p>
   )
 }
 export default DashboardPage
