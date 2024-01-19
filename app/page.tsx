@@ -1,7 +1,8 @@
 import AcmeLogo from '@/app/ui/acme-logo';
-import styles from './ui/home.module.css'
+import styles from '@/app/ui/home.module.css'
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { lusitana } from './ui/fonts';
 
 export default function Page() {
   return (
@@ -12,8 +13,8 @@ export default function Page() {
       </div>
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
         <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-          <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to Kilometraje.</strong> This is the example for the{' '}
+          <p className={` text-xl text-gray-800 md:text-3xl md:leading-normal`}>
+            <strong className={`${lusitana.className}`}>Bienvenido a Kilometraje.</strong> This is the example for the{' '}
             <a href="https://nextjs.org/learn/" className="text-blue-500">
               Next.js Learn Course
             </a>
