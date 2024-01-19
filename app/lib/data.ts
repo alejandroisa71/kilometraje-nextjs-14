@@ -7,6 +7,7 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  Vehicle,
 } from './definitions';
 import { formatCurrency } from './utils';
 

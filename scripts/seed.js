@@ -4,6 +4,7 @@ const {
   customers,
   revenue,
   users,
+  vehicles,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -42,6 +43,42 @@ async function seedUsers(client) {
     };
   } catch (error) {
     console.error('Error seeding users:', error);
+    throw error;
+  }
+}
+async function seedVehicles(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "users" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS vehicles (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        patente VARCHAR(255) NOT NULL
+        description VARCHAR(255) NOT NULL,
+     );
+    `;
+
+    console.log(`Created "vehicles" table`);
+
+    // Insert data into the "users" table
+    const insertedVehicles = await Promise.all(
+      vehicles.map(async (vehicle) => {
+        return client.sql`
+        INSERT INTO users (id, name, email, password)
+        VALUES (${vehicle.id}, ${vehicle.description}})
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedVehicles.length} vehicles`);
+
+    return {
+      createTable,
+      vehicles: insertedVehicles,
+    };
+  } catch (error) {
+    console.error('Error seeding vehicles:', error);
     throw error;
   }
 }
