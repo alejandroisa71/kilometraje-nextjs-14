@@ -230,3 +230,13 @@ export async function getUser(email: string) {
     throw new Error('Failed to fetch user.');
   }
 }
+
+export async function getVehicle(patente: string) {
+  try {
+    const vehicle = await sql`SELECT * FROM vehicles WHERE patente=${patente}`;
+    return vehicle.rows[0] as Vehicle;
+  } catch (error) {
+    console.error('Failed to fetch vehicle:', error);
+    throw new Error('Failed to fetch vehicle.');
+  }
+}

@@ -88,6 +88,6 @@ export type InvoiceForm = {
 };
 
 export type Vehicle = {
-  id:string,
-  description:string
-}
+  id:string;
+  description:string;
+};

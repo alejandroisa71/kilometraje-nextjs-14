@@ -49,12 +49,12 @@ async function seedUsers(client) {
 async function seedVehicles(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    // Create the "users" table if it doesn't exist
+    // Create the "vehicles" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS vehicles (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        patente VARCHAR(255) NOT NULL
-        description VARCHAR(255) NOT NULL,
+        patente VARCHAR(255) NOT NULL,
+        description VARCHAR(255) NOT NULL
      );
     `;
 
@@ -64,8 +64,8 @@ async function seedVehicles(client) {
     const insertedVehicles = await Promise.all(
       vehicles.map(async (vehicle) => {
         return client.sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${vehicle.id}, ${vehicle.description}})
+        INSERT INTO vehicles (patente, description)
+        VALUES (${vehicle.patente},${vehicle.description})
         ON CONFLICT (id) DO NOTHING;
       `;
       }),
@@ -204,6 +204,7 @@ async function main() {
   await seedCustomers(client);
   await seedInvoices(client);
   await seedRevenue(client);
+  await seedVehicles(client);
 
   await client.end();
 }
