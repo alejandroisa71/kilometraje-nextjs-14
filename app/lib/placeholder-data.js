@@ -180,7 +180,10 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
-const vehicles = [{ patente: 'NBA124', description: 'FIAT DOBBLO 1.4 2013'},];
+const vehicles = [
+  { patente: 'NBA124', description: 'FIAT DOBBLO 1.4 2013'},
+  { patente: 'NGU065', description: 'RENAULT MASTER 2.0 2013'},
+];
 
 module.exports = {
   users,
