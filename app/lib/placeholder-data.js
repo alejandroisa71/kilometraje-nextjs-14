@@ -1,4 +1,7 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
+
+// const { date } = require('zod');
+
 // https://nextjs.org/learn/dashboard-app/fetching-data
 const users = [
   {
@@ -181,9 +184,16 @@ const revenue = [
 ];
 
 const vehicles = [
-  { patente: 'NBA124', description: 'FIAT DOBBLO 1.4 2013'},
-  { patente: 'NGU065', description: 'RENAULT MASTER 2.0 2013'},
+  {id: '3958dc9e-712f-4377-85e9-fec4b6a6442a', patente: 'NBA124', description: 'FIAT DOBBLO 1.4 2013' },
+  {id: '13D07535-C59E-4157-A011-F8D2EF4E0CBB', patente: 'NGU065', description: 'RENAULT MASTER 2.0 2013' },
 ];
+
+const movements = [
+  {vehicle_id:vehicles[1].id, date: '2024,01,10', description: 'Ir al Registro Civil' },
+  {vehicle_id:vehicles[0].id, date: '2024,01,10', description: 'Ir al mecanico' },
+  {vehicle_id:vehicles[0].id, date: '2024,01,10', description: 'Retirar Capilla' },
+  {vehicle_id:vehicles[0].id, date: '2024,01,10', description: 'Instlar Servicio' },
+ ];
 
 module.exports = {
   users,
@@ -191,4 +201,5 @@ module.exports = {
   invoices,
   revenue,
   vehicles,
+  movements,
 };

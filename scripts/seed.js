@@ -5,6 +5,7 @@ const {
   revenue,
   users,
   vehicles,
+  movements
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -46,6 +47,52 @@ async function seedUsers(client) {
     throw error;
   }
 }
+
+//----------
+async function seedMovements(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "movements" table if it doesn't exist
+    const createTable = await client.sql`
+    CREATE TABLE IF NOT EXISTS movements (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    vehicle_id UUID NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    date DATE NOT NULL
+  );
+`;
+
+    console.log(`Created "movements" table`);
+
+    // Insert data into the "movements" table
+    const insertedMovements = await Promise.all(
+      movements.map(
+        (movement) => client.sql`
+        INSERT INTO movements (vehicle_id, description, date)
+        VALUES (${movement.vehicle_id}, ${movement.description}, ${movement.date})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+      ),
+    );
+
+    console.log(`Seeded ${insertedMovements.length} movements`);
+
+    return {
+      createTable,
+      movements: insertedMovements,
+    };
+  } catch (error) {
+    console.error('Error seeding movements:', error);
+    throw error;
+  }
+}
+
+
+
+//-----------
+
+//============================================================================
 async function seedVehicles(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -60,7 +107,7 @@ async function seedVehicles(client) {
 
     console.log(`Created "vehicles" table`);
 
-    // Insert data into the "users" table
+    // Insert data into the "vehicles" table
     const insertedVehicles = await Promise.all(
       vehicles.map(async (vehicle) => {
         return client.sql`
@@ -83,6 +130,8 @@ async function seedVehicles(client) {
   }
 }
 
+
+//================================================================
 async function seedInvoices(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -205,6 +254,7 @@ async function main() {
   await seedInvoices(client);
   await seedRevenue(client);
   await seedVehicles(client);
+  await seedMovements(client);
 
   await client.end();
 }
