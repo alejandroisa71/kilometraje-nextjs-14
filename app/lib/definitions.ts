@@ -89,5 +89,20 @@ export type InvoiceForm = {
 
 export type Vehicle = {
   id:string;
+  patente: string;
   description:string;
 };
+
+export type VehicleField = {
+  id: string;
+  patente: string;
+  description: string;
+};
+
+export type MovementsTable = {
+  id: string;
+  vehicle_id: string;
+  description: string;
+  date: string;
+};
+// patente: string;

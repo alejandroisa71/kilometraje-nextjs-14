@@ -1,3 +1,5 @@
+import { movements, vehicles } from '@/app/lib/placeholder-data';
+// import { fetchVehicles } from '@/app/lib/data';
 import { sql } from '@vercel/postgres';
 import {
   CustomerField,
@@ -8,6 +10,8 @@ import {
   User,
   Revenue,
   Vehicle,
+  VehicleField,
+  MovementsTable
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -238,12 +242,115 @@ export async function getUser(email: string) {
   }
 }
 
-export async function getVehicle(patente: string) {
+export async function getVehicles(patente: string) {
   try {
     const vehicle = await sql`SELECT * FROM vehicles WHERE patente=${patente}`;
     return vehicle.rows[0] as Vehicle;
   } catch (error) {
     console.error('Failed to fetch vehicle:', error);
     throw new Error('Failed to fetch vehicle.');
+  }
+}
+
+export async function fetchVehicles() {
+  try {
+    const data = await sql<VehicleField>`
+      SELECT
+        id,
+        patente
+      FROM vehicles
+      ORDER BY patente ASC
+    `;
+
+    const vehicles = data.rows;
+    return vehicles;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all vehicles.');
+  }
+}
+
+export async function fetchLatestMovements() {
+  try {
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const data = await sql<LatestInvoiceRaw>`
+      SELECT movements.amount, vehicles.patente, vehicles.description,  movements.id, vehicles.id
+      FROM movements
+      JOIN vehicles ON movements.vehicle_id = vehicles.id
+      ORDER BY movements.date DESC
+      LIMIT 5`;
+
+    // console.log(data.rows)
+    const latestMovements = data.rows.map((movement) => ({
+      ...movement,
+       }));
+    // console.log(latestInvoices);
+    return latestMovements;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest movements.');
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export async function fetchFilteredMovements(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const movements = await sql<MovementsTable>`
+      SELECT
+        movements.id,
+        movements.description,
+        vehicle.patente,
+      FROM movements
+      JOIN movements ON movements.vehicle_id = vehicles.id
+      WHERE
+        vehicles.patente ILIKE ${`%${query}%`} OR
+        movements.date::text ILIKE ${`%${query}%`} OR
+      ORDER BY movements.date DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return movements.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch movements.');
+  }
+}
+
+export async function fetchMovementsPages(query: string) {
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM movements
+    JOIN vehicles ON movements.vehicle_id = vehicles.id
+    WHERE
+      vehicles.patente ILIKE ${`%${query}%`} OR
+      movements.date::text ILIKE ${`%${query}%`} OR
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of movements.');
   }
 }
