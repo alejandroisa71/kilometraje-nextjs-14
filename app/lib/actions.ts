@@ -1,4 +1,4 @@
-import { vehicles } from '@/app/lib/placeholder-data';
+// import { vehicles } from '@/app/lib/placeholder-data';
 'use server';
 //Todas las funciones qeu se exportan en este archivo son de servidor (no se ejecutan ni se envian al cliente)
 import { signIn } from '@/auth';
@@ -39,12 +39,14 @@ export type State = {
 
 export async function createInvoice(prevState: State, formData: FormData) {
   // Validate form using Zod
+
   const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
  
+  console.log(validatedFields)
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -166,8 +168,7 @@ const FormSchemaMovement = z.object({
   description: z.string({
     invalid_type_error: 'Please select a description.',
   }),
-  
-  date: z.string(),
+   date: z.string(),
 });
 
 
@@ -186,6 +187,7 @@ export type StateMovement = {
 
 export async function createMovement(prevState: StateMovement, formData: FormData) {
   // Validate form using Zod
+  console.log(FormData)
   const validatedFields = CreateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
     description: formData.get('description'),
@@ -205,10 +207,11 @@ export async function createMovement(prevState: StateMovement, formData: FormDat
  
   // Insert data into the database
   try {
-    await sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
+   const prueba= await sql`
+      INSERT INTO movements (vehicle_id, description, date)
       VALUES (${vehicleId}, ${description} ${date})
-    `;
+    `; 
+    console.log(prueba)
   } catch (error) {
     // If a database error occurs, return a more specific error.
     return {
@@ -217,8 +220,8 @@ export async function createMovement(prevState: StateMovement, formData: FormDat
   }
  
   // Revalidate the cache for the invoices page and redirect the user.
-  revalidatePath('/dashboard/movements');
-  redirect('/dashboard/movements');
+  revalidatePath('/dashboard/movement');
+  redirect('/dashboard/movement');
 }
 
 

@@ -12,6 +12,9 @@ export default async function MovementsTable({
   currentPage: number;
 }) {
   const movements = await fetchFilteredMovements(query, currentPage);
+  console.log('mmmmmmmmmmmm')
+  console.log(movements)
+  console.log('mmmmmmmmmmmm')
 
   return (
     <div className="mt-6 flow-root">

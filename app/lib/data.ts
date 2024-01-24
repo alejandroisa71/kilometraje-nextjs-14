@@ -11,7 +11,9 @@ import {
   Revenue,
   Vehicle,
   VehicleField,
-  MovementsTable
+  MovementForm,
+  MovementsTable,
+  LatestMovementRaw
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -275,8 +277,8 @@ export async function fetchLatestMovements() {
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const data = await sql<LatestInvoiceRaw>`
-      SELECT movements.amount, vehicles.patente, vehicles.description,  movements.id, vehicles.id
+    const data = await sql<LatestMovementRaw>`
+      SELECT vehicles.patente, vehicles.description,  movements.id, vehicles.id
       FROM movements
       JOIN vehicles ON movements.vehicle_id = vehicles.id
       ORDER BY movements.date DESC
@@ -320,12 +322,12 @@ export async function fetchFilteredMovements(
       SELECT
         movements.id,
         movements.description,
-        vehicle.patente,
+        movements.date,
+        vehicles.patente,
       FROM movements
       JOIN movements ON movements.vehicle_id = vehicles.id
       WHERE
-        vehicles.patente ILIKE ${`%${query}%`} OR
-        movements.date::text ILIKE ${`%${query}%`} OR
+        vehicles.patente ILIKE ${`%${query}%`}
       ORDER BY movements.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
@@ -352,5 +354,32 @@ export async function fetchMovementsPages(query: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of movements.');
+  }
+}
+
+
+export async function fetchMovementById(id: string) {
+  try {
+    const data = await sql<MovementForm>`
+      SELECT
+        movements.id,
+        movements.vehicle_id,
+        movemnets.description,
+      FROM movements
+      WHERE movements.id = ${id};
+    `;
+
+    const movement = data.rows.map((invoice) => ({
+      ...invoice,
+      // Convert amount from cents to dollars
+      // amount: invoice.amount / 100,
+    }));
+
+    // console.log(invoice);
+
+    return movement[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch movement.');
   }
 }

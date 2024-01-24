@@ -87,10 +87,13 @@ export type InvoiceForm = {
   status: 'pending' | 'paid';
 };
 
+
+
+
 export type Vehicle = {
-  id:string;
+  id: string;
   patente: string;
-  description:string;
+  description: string;
 };
 
 export type VehicleField = {
@@ -103,6 +106,24 @@ export type MovementsTable = {
   id: string;
   vehicle_id: string;
   description: string;
+  patente:string;
   date: string;
 };
 // patente: string;
+
+export type LatestMovement = {
+  id: string;
+  patente: string;
+  date: string;
+};
+
+// The database returns a number for amount, but we later format it to a string with the formatCurrency function
+export type LatestMovementRaw = LatestMovement;
+
+
+export type MovementForm = {
+  id: string;
+  vehicle_id: string;
+  description: number;
+  date: string;
+};
