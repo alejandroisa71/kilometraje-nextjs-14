@@ -1,3 +1,4 @@
+// import { StateMovement } from './actions';
 // import { vehicles } from '@/app/lib/placeholder-data';
 'use server';
 //Todas las funciones qeu se exportan en este archivo son de servidor (no se ejecutan ni se envian al cliente)
@@ -160,16 +161,24 @@ export async function deleteInvoice(id: string) {
 
 
 //----movement----
+
+
+
 const FormSchemaMovement = z.object({
   id: z.string(),
   vehicleId: z.string({
-    invalid_type_error: 'Please select a vehicle.',
+    invalid_type_error: 'Please select a Vehicle.',
   }),
-  description: z.string({
-    invalid_type_error: 'Please select a description.',
+  final: z.coerce
+    .number()
+    .gt(0, { message: 'Please enter an final greater than 0.' }),
+  status: z.enum(['pending', 'paid'], {
+    invalid_type_error: 'Please select an movement status.',
   }),
-   date: z.string(),
+  date: z.string(),
 });
+
+
 
 
 const CreateMovement = FormSchemaMovement.omit({
@@ -180,19 +189,24 @@ const CreateMovement = FormSchemaMovement.omit({
 export type StateMovement = {
   errors?: {
     vehicleId?: string[];
-    description?: string[];
+    final?: string[];
+    status?: string[];
   };
   message?: string | null;
 };
 
+
+
+
 export async function createMovement(prevState: StateMovement, formData: FormData) {
   // Validate form using Zod
-  console.log(FormData)
   const validatedFields = CreateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
-    description: formData.get('description'),
+    final: formData.get('final'),
+    status: formData.get('status'),
   });
  
+  console.log(validatedFields)
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -202,16 +216,17 @@ export async function createMovement(prevState: StateMovement, formData: FormDat
   }
  
   // Prepare data for insertion into the database
-  const { vehicleId, description } = validatedFields.data;
+  const { vehicleId, final, status } = validatedFields.data;
+  // const finalInCents = final * 100;
   const date = new Date().toISOString().split('T')[0];
  
   // Insert data into the database
   try {
-   const prueba= await sql`
-      INSERT INTO movements (vehicle_id, description, date)
-      VALUES (${vehicleId}, ${description} ${date})
-    `; 
-    console.log(prueba)
+    console.log('pasooooo')
+    await sql`
+      INSERT INTO movements (vehicle_id, final, status, date)
+      VALUES (${vehicleId}, ${final}, ${status}, ${date})
+    `;
   } catch (error) {
     // If a database error occurs, return a more specific error.
     return {

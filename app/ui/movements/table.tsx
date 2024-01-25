@@ -36,7 +36,7 @@ export default async function MovementsTable({
                         height={28}
                         alt={`${movement.patente}'s profile picture`}
                       /> */}
-                      <p>{movement.description}</p>
+                      <p>{movement.patente}</p>
                     </div>
                     {/* <p className="text-sm text-gray-500">{movement.email}</p> */}
                   </div>

@@ -90,35 +90,98 @@ export type InvoiceForm = {
 
 
 
-export type Vehicle = {
-  id: string;
-  patente: string;
-  description: string;
-};
 
-export type VehicleField = {
-  id: string;
-  patente: string;
-  description: string;
-};
 
-export type MovementsTable = {
+
+
+export type Movement = {
   id: string;
-  vehicle_id: string;
-  description: string;
-  patente:string;
+  customer_id: string;
+  final: number;
   date: string;
+  // In TypeScript, this is called a string union type.
+  // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
+  status: 'pending' | 'paid';
 };
-// patente: string;
+
 
 export type LatestMovement = {
   id: string;
   patente: string;
-  date: string;
+  final: string;
 };
 
+
 // The database returns a number for amount, but we later format it to a string with the formatCurrency function
-export type LatestMovementRaw = LatestMovement;
+export type LatestMovementRaw = Omit<LatestMovement, 'final'> & {
+  final: number;
+};
+
+
+export type MovementsTable = {
+  id: string;
+  vehicle_id: string;
+  patente: string;
+  date: string;
+  amount: number;
+  status: 'pending' | 'paid';
+};
+
+//-----Vehicle-------------
+
+export type VehicleTableType = {
+  id: string;
+  patente: string;
+  description: string;
+  total_movements: number;
+  total_pending: number;
+  total_paid: number;
+};
+
+export type FormattedVehiclesTable = {
+  id: string;
+  patente: string;
+  description: string;
+  total_movements: number;
+  total_pending: string;
+  total_paid: string;
+};
+
+
+export type VehicleField = {
+  id: string;
+  patente: string;
+};
+
+export type MovementFormForm = {
+  id: string;
+  vehicle_id: string;
+  final: number;
+  status: 'pending' | 'paid';
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export type MovementForm = {

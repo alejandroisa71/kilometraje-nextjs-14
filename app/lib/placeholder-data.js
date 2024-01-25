@@ -189,10 +189,10 @@ const vehicles = [
 ];
 
 const movements = [
-  {vehicle_id:vehicles[1].id, date: '2024,01,10', description: 'Ir al Registro Civil' },
-  {vehicle_id:vehicles[0].id, date: '2024,01,10', description: 'Ir al mecanico' },
-  {vehicle_id:vehicles[0].id, date: '2024,01,10', description: 'Retirar Capilla' },
-  {vehicle_id:vehicles[0].id, date: '2024,01,10', description: 'Instlar Servicio' },
+  {vehicle_id:vehicles[1].id, date: '2024,01,10', final: 1500 },
+  {vehicle_id:vehicles[0].id, date: '2024,01,10', final: 3000 },
+  {vehicle_id:vehicles[0].id, date: '2024,01,10', final: 3100 },
+  {vehicle_id:vehicles[0].id, date: '2024,01,10', final: 3400 },
  ];
 
 module.exports = {

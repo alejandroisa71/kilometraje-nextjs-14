@@ -9,7 +9,6 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
-  Vehicle,
   VehicleField,
   MovementForm,
   MovementsTable,
@@ -244,14 +243,26 @@ export async function getUser(email: string) {
   }
 }
 
-export async function getVehicles(patente: string) {
+
+
+
+export async function getVehicles() {
   try {
-    const vehicle = await sql`SELECT * FROM vehicles WHERE patente=${patente}`;
-    return vehicle.rows[0] as Vehicle;
-  } catch (error) {
-    console.error('Failed to fetch vehicle:', error);
-    throw new Error('Failed to fetch vehicle.');
+    const data = await sql<VehicleField>`
+      SELECT
+        id,
+        patente
+      FROM vehicles
+      ORDER BY patente ASC
+    `;
+
+    const vehicles = data.rows;
+    return vehicles;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all vehicles.');
   }
+
 }
 
 export async function fetchVehicles() {
@@ -297,20 +308,6 @@ export async function fetchLatestMovements() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export async function fetchFilteredMovements(
   query: string,
   currentPage: number,
@@ -321,7 +318,7 @@ export async function fetchFilteredMovements(
     const movements = await sql<MovementsTable>`
       SELECT
         movements.id,
-        movements.description,
+        movements.final,
         movements.date,
         vehicles.patente,
       FROM movements
@@ -364,7 +361,7 @@ export async function fetchMovementById(id: string) {
       SELECT
         movements.id,
         movements.vehicle_id,
-        movemnets.description,
+        movements.final,
       FROM movements
       WHERE movements.id = ${id};
     `;

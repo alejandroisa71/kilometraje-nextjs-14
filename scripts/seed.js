@@ -58,7 +58,7 @@ async function seedMovements(client) {
     CREATE TABLE IF NOT EXISTS movements (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     vehicle_id UUID NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    final INT NOT NULL,
     date DATE NOT NULL
   );
 `;
@@ -69,8 +69,8 @@ async function seedMovements(client) {
     const insertedMovements = await Promise.all(
       movements.map(
         (movement) => client.sql`
-        INSERT INTO movements (vehicle_id, description, date)
-        VALUES (${movement.vehicle_id}, ${movement.description}, ${movement.date})
+        INSERT INTO movements (vehicle_id, final, date)
+        VALUES (${movement.vehicle_id}, ${movement.final}, ${movement.date})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
