@@ -1,4 +1,4 @@
-import { movements, vehicles } from '@/app/lib/placeholder-data';
+// import { movements, vehicles } from '@/app/lib/placeholder-data';
 // import { fetchVehicles } from '@/app/lib/data';
 import { sql } from '@vercel/postgres';
 import {
@@ -10,9 +10,10 @@ import {
   User,
   Revenue,
   VehicleField,
+  VehiclesTableType,
   MovementForm,
   MovementsTable,
-  LatestMovementRaw
+  LatestMovementRaw,
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -40,7 +41,6 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
-
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const data = await sql<LatestInvoiceRaw>`
@@ -243,9 +243,6 @@ export async function getUser(email: string) {
   }
 }
 
-
-
-
 export async function getVehicles() {
   try {
     const data = await sql<VehicleField>`
@@ -262,7 +259,6 @@ export async function getVehicles() {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all vehicles.');
   }
-
 }
 
 export async function fetchVehicles() {
@@ -283,13 +279,44 @@ export async function fetchVehicles() {
   }
 }
 
+export async function fetchFilteredVehicles(query: string) {
+  try {
+    const data = await sql<VehiclesTableType>`
+		SELECT
+		  vehicles.id,
+		  vehicles.patente,
+		  vehicles.description,
+		  COUNT(movements.id) AS total_movements,
+		  SUM(CASE WHEN movements.status = 'pending' THEN movements.amount ELSE 0 END) AS total_pending,
+		  SUM(CASE WHEN movements.status = 'paid' THEN movements.amount ELSE 0 END) AS total_paid
+		FROM vehicles
+		LEFT JOIN movements ON vehicles.id = movements.vehicle_id
+		WHERE
+		  vehicles.paente ILIKE ${`%${query}%`} OR
+		GROUP BY vehicles.id, vehicles.patente
+		ORDER BY vehicles.name ASC
+	  `;
+
+    const vehicles = data.rows.map((vehicle) => ({
+      ...vehicle,
+      total_pending: formatCurrency(vehicle.total_pending),
+      total_paid: formatCurrency(vehicle.total_paid),
+    }));
+
+    return vehicles;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch vehicles table.');
+  }
+}
+
+
 export async function fetchLatestMovements() {
   try {
-
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const data = await sql<LatestMovementRaw>`
-      SELECT vehicles.patente, vehicles.description,  movements.id, vehicles.id
+      SELECT vehicles.patente, movements.final, movements.id, vehicles.id
       FROM movements
       JOIN vehicles ON movements.vehicle_id = vehicles.id
       ORDER BY movements.date DESC
@@ -298,15 +325,14 @@ export async function fetchLatestMovements() {
     // console.log(data.rows)
     const latestMovements = data.rows.map((movement) => ({
       ...movement,
-       }));
-    // console.log(latestInvoices);
+      final: formatCurrency(movement.final),
+    }));
     return latestMovements;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest movements.');
   }
 }
-
 
 export async function fetchFilteredMovements(
   query: string,
@@ -320,19 +346,24 @@ export async function fetchFilteredMovements(
         movements.id,
         movements.final,
         movements.date,
-        vehicles.patente,
+        movements.status,
+        vehicles.patente
       FROM movements
-      JOIN movements ON movements.vehicle_id = vehicles.id
+      JOIN vehicles ON movements.vehicle_id = vehicles.id
       WHERE
-        vehicles.patente ILIKE ${`%${query}%`}
-      ORDER BY movements.date DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
-
+        vehicles.patente ILIKE ${`%${query}%`}OR
+        movements.final::text ILIKE ${`%${query}%`} OR
+        movements.date::text ILIKE ${`%${query}%`} OR
+        movements.status ILIKE ${`%${query}%`}
+        ORDER BY movements.date DESC
+        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
     return movements.rows;
   } catch (error) {
+
     console.error('Database Error:', error);
     throw new Error('Failed to fetch movements.');
+
   }
 }
 
@@ -343,7 +374,10 @@ export async function fetchMovementsPages(query: string) {
     JOIN vehicles ON movements.vehicle_id = vehicles.id
     WHERE
       vehicles.patente ILIKE ${`%${query}%`} OR
+      movements.final::text ILIKE ${`%${query}%`} OR
       movements.date::text ILIKE ${`%${query}%`} OR
+      movements.date::text ILIKE ${`%${query}%`} OR
+      movements.status ILIKE ${`%${query}%`}
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
@@ -353,7 +387,6 @@ export async function fetchMovementsPages(query: string) {
     throw new Error('Failed to fetch total number of movements.');
   }
 }
-
 
 export async function fetchMovementById(id: string) {
   try {

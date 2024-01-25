@@ -184,16 +184,44 @@ const revenue = [
 ];
 
 const vehicles = [
-  {id: '3958dc9e-712f-4377-85e9-fec4b6a6442a', patente: 'NBA124', description: 'FIAT DOBBLO 1.4 2013' },
-  {id: '13D07535-C59E-4157-A011-F8D2EF4E0CBB', patente: 'NGU065', description: 'RENAULT MASTER 2.0 2013' },
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    patente: 'NBA124',
+    description: 'FIAT DOBBLO 1.4 2013',
+  },
+  {
+    id: '13D07535-C59E-4157-A011-F8D2EF4E0CBB',
+    patente: 'NGU065',
+    description: 'RENAULT MASTER 2.0 2013',
+  },
 ];
 
 const movements = [
-  {vehicle_id:vehicles[1].id, date: '2024,01,10', final: 1500 },
-  {vehicle_id:vehicles[0].id, date: '2024,01,10', final: 3000 },
-  {vehicle_id:vehicles[0].id, date: '2024,01,10', final: 3100 },
-  {vehicle_id:vehicles[0].id, date: '2024,01,10', final: 3400 },
- ];
+  {
+    vehicle_id: vehicles[1].id,
+    date: '2024,01,10',
+    final: 1500,
+    status: 'paid',
+  },
+  {
+    vehicle_id: vehicles[0].id,
+    date: '2024,01,10',
+    final: 3000,
+    status: 'paid',
+  },
+  {
+    vehicle_id: vehicles[0].id,
+    date: '2024,01,10',
+    final: 3100,
+    status: 'pending',
+  },
+  {
+    vehicle_id: vehicles[0].id,
+    date: '2024,01,10',
+    final: 3400,
+    status: 'paid',
+  },
+];
 
 module.exports = {
   users,

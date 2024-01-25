@@ -90,10 +90,6 @@ export type InvoiceForm = {
 
 
 
-
-
-
-
 export type Movement = {
   id: string;
   customer_id: string;
@@ -123,13 +119,16 @@ export type MovementsTable = {
   vehicle_id: string;
   patente: string;
   date: string;
-  amount: number;
+  final: number;
   status: 'pending' | 'paid';
 };
 
 //-----Vehicle-------------
 
-export type VehicleTableType = {
+
+
+
+export type VehiclesTableType = {
   id: string;
   patente: string;
   description: string;
@@ -153,33 +152,6 @@ export type VehicleField = {
   patente: string;
 };
 
-export type MovementFormForm = {
-  id: string;
-  vehicle_id: string;
-  final: number;
-  status: 'pending' | 'paid';
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -187,6 +159,6 @@ export type MovementFormForm = {
 export type MovementForm = {
   id: string;
   vehicle_id: string;
-  description: number;
-  date: string;
+  final: number;
+  status: string;
 };

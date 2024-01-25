@@ -59,6 +59,7 @@ async function seedMovements(client) {
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     vehicle_id UUID NOT NULL,
     final INT NOT NULL,
+    status VARCHAR(255) NOT NULL,
     date DATE NOT NULL
   );
 `;
@@ -69,8 +70,8 @@ async function seedMovements(client) {
     const insertedMovements = await Promise.all(
       movements.map(
         (movement) => client.sql`
-        INSERT INTO movements (vehicle_id, final, date)
-        VALUES (${movement.vehicle_id}, ${movement.final}, ${movement.date})
+        INSERT INTO movements (vehicle_id, final, status, date)
+        VALUES (${movement.vehicle_id}, ${movement.final}, ${movement.status}, ${movement.date})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

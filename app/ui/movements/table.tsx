@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { UpdateMovement, DeleteMovement } from '@/app/ui/movements/buttons';
-// import MovementStatus from '@/app/ui/movements/status';
+import MovementStatus from '@/app/ui/movements/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredMovements } from '@/app/lib/data';
 
@@ -12,9 +12,9 @@ export default async function MovementsTable({
   currentPage: number;
 }) {
   const movements = await fetchFilteredMovements(query, currentPage);
-  console.log('mmmmmmmmmmmm')
+  // console.log('mmmmmmmmmmmm')
   console.log(movements)
-  console.log('mmmmmmmmmmmm')
+  // console.log('mmmmmmmmmmmm')
 
   return (
     <div className="mt-6 flow-root">
@@ -40,7 +40,7 @@ export default async function MovementsTable({
                     </div>
                     {/* <p className="text-sm text-gray-500">{movement.email}</p> */}
                   </div>
-                  {/* <MovementStatus status={movement.status} /> */}
+                  <MovementStatus status={movement.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
@@ -58,16 +58,13 @@ export default async function MovementsTable({
             ))}
           </div>
           <table className="hidden min-w-full text-gray-900 md:table">
-            {/* <thead className="rounded-lg text-left text-sm font-normal">
+            <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Customer
+                  Vehicle
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Email
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                  Final
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Date
@@ -79,7 +76,7 @@ export default async function MovementsTable({
                   <span className="sr-only">Edit</span>
                 </th>
               </tr>
-            </thead> */}
+            </thead>
             <tbody className="bg-white">
               {movements?.map((movement) => (
                 <tr
@@ -95,15 +92,16 @@ export default async function MovementsTable({
                         height={28}
                         alt={`${movement.name}'s profile picture`}
                       /> */}
-                      {/* <p>{movement.patente}</p> */}
+                      <p>{movement.patente}</p>
                     </div>
                   </td>
                   {/* <td className="whitespace-nowrap px-3 py-3">
                     {movement.email}
-                  </td>
+                    </td>*/}
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(movement.amount)}
-                  </td> */}
+                    {/* {movement.final} */}
+                    {formatCurrency(movement.final)}
+                  </td> 
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(movement.date)}
                   </td>

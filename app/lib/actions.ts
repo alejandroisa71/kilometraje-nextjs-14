@@ -34,9 +34,13 @@ export type State = {
     customerId?: string[];
     amount?: string[];
     status?: string[];
+    vehicleId?: string[];
+    final?: string[];
   };
   message?: string | null;
 };
+
+
 
 export async function createInvoice(prevState: State, formData: FormData) {
   // Validate form using Zod
@@ -198,7 +202,7 @@ export type StateMovement = {
 
 
 
-export async function createMovement(prevState: StateMovement, formData: FormData) {
+export async function createMovement(prevState: State, formData: FormData) {
   // Validate form using Zod
   const validatedFields = CreateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
@@ -246,10 +250,13 @@ const UpdateMovementSchema = z.object({
   vehicleId: z.string({
     invalid_type_error: 'Please select a vehicle.',
   }),
-  description: z.string({
-    invalid_type_error: 'Please select a description.',
-  }),
-  date: z.string(),
+  final: z.coerce
+    .number()
+    .gt(0, { message: 'Please enter an final greater than 0.' }),
+    status: z.enum(['pending', 'paid'], {
+      invalid_type_error: 'Please select an invoice status.',
+    }),
+    date: z.string(),
 });
 
 
@@ -264,7 +271,8 @@ export async function updateMovement(
 ) {
   const validatedFields = UpdateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
-    description: formData.get('description'),
+    final: formData.get('final'),
+    status: formData.get('status'),
   });
 
   // console.log(validatedFields);
@@ -276,7 +284,7 @@ export async function updateMovement(
     };
   }
  
-  const {vehicleId, description } = validatedFields.data;
+  const {vehicleId, final, status } = validatedFields.data;
 
   // console.log(prevState)
   // console.log(id)
@@ -284,17 +292,17 @@ export async function updateMovement(
  
   try {
     await sql`
-      UPDATE invoices
-      SET customer_id = ${vehicleId}, description = ${description}
+      UPDATE movements
+      SET vehicle_id = ${vehicleId}, final = ${final}, status = ${status}
       WHERE id = ${id}
     `;
   } catch (error) {
     return { message: 'Database Error: Failed to Update Movement.' };
   }
  
-  revalidatePath('/dashboard/movements');
-  revalidatePath(`/dashboard/movements/${id}/edit`)
-  redirect('/dashboard/movements');
+  revalidatePath('/dashboard/movement');
+  revalidatePath(`/dashboard/movement/${id}/edit`)
+  redirect('/dashboard/movement');
 }
 
 
@@ -304,7 +312,7 @@ export async function deleteMovement(id: string) {
   // Unreachable code block
   try {
     await sql`DELETE FROM movements WHERE id = ${id}`;
-    revalidatePath('/dashboard/movements');
+    revalidatePath('/dashboard/movement');
     return { message: 'Deleted Movement' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Movement' };
