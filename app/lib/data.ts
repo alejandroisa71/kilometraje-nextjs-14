@@ -105,6 +105,8 @@ export async function fetchFilteredInvoices(
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
+  // console.log(query)
+
   try {
     const invoices = await sql<InvoicesTable>`
       SELECT
@@ -279,6 +281,12 @@ export async function fetchVehicles() {
   }
 }
 
+
+
+
+
+
+
 export async function fetchFilteredVehicles(query: string) {
   try {
     const data = await sql<VehiclesTableType>`
@@ -299,8 +307,8 @@ export async function fetchFilteredVehicles(query: string) {
 
     const vehicles = data.rows.map((vehicle) => ({
       ...vehicle,
-      total_pending: formatCurrency(vehicle.total_pending),
-      total_paid: formatCurrency(vehicle.total_paid),
+      total_pending: vehicle.total_pending,
+      total_paid: vehicle.total_paid,
     }));
 
     return vehicles;
@@ -316,7 +324,7 @@ export async function fetchLatestMovements() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const data = await sql<LatestMovementRaw>`
-      SELECT vehicles.patente, movements.final, movements.id, vehicles.id
+      SELECT movements.final, vehicles.patente, movements.id, vehicles.id
       FROM movements
       JOIN vehicles ON movements.vehicle_id = vehicles.id
       ORDER BY movements.date DESC
@@ -325,7 +333,7 @@ export async function fetchLatestMovements() {
     // console.log(data.rows)
     const latestMovements = data.rows.map((movement) => ({
       ...movement,
-      final: formatCurrency(movement.final),
+      final: movement.final,
     }));
     return latestMovements;
   } catch (error) {
@@ -340,6 +348,7 @@ export async function fetchFilteredMovements(
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
+
   try {
     const movements = await sql<MovementsTable>`
       SELECT
@@ -351,13 +360,14 @@ export async function fetchFilteredMovements(
       FROM movements
       JOIN vehicles ON movements.vehicle_id = vehicles.id
       WHERE
-        vehicles.patente ILIKE ${`%${query}%`}OR
+        vehicles.patente ILIKE ${`%${query}%`} OR
         movements.final::text ILIKE ${`%${query}%`} OR
         movements.date::text ILIKE ${`%${query}%`} OR
         movements.status ILIKE ${`%${query}%`}
         ORDER BY movements.date DESC
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
+        // console.log(movements.rows)
     return movements.rows;
   } catch (error) {
 

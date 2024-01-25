@@ -210,7 +210,7 @@ export async function createMovement(prevState: State, formData: FormData) {
     status: formData.get('status'),
   });
  
-  console.log(validatedFields)
+  // console.log(validatedFields)
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -226,11 +226,12 @@ export async function createMovement(prevState: State, formData: FormData) {
  
   // Insert data into the database
   try {
-    console.log('pasooooo')
-    await sql`
+    // console.log('pasooooo')
+     await sql`
       INSERT INTO movements (vehicle_id, final, status, date)
       VALUES (${vehicleId}, ${final}, ${status}, ${date})
     `;
+
   } catch (error) {
     // If a database error occurs, return a more specific error.
     return {
@@ -286,9 +287,7 @@ export async function updateMovement(
  
   const {vehicleId, final, status } = validatedFields.data;
 
-  // console.log(prevState)
-  // console.log(id)
-  // console.log(amount)
+ 
  
   try {
     await sql`

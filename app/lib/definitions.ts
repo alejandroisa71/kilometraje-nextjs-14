@@ -131,7 +131,7 @@ export type MovementsTable = {
 export type VehiclesTableType = {
   id: string;
   patente: string;
-  description: string;
+  // description: string;
   total_movements: number;
   total_pending: number;
   total_paid: number;
@@ -140,7 +140,7 @@ export type VehiclesTableType = {
 export type FormattedVehiclesTable = {
   id: string;
   patente: string;
-  description: string;
+  // description: string;
   total_movements: number;
   total_pending: string;
   total_paid: string;
@@ -152,6 +152,11 @@ export type VehicleField = {
   patente: string;
 };
 
+
+export type Vehicle = {
+  id: string;
+  patente: string;
+};
 
 
 

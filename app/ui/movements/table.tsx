@@ -11,9 +11,10 @@ export default async function MovementsTable({
   query: string;
   currentPage: number;
 }) {
+
   const movements = await fetchFilteredMovements(query, currentPage);
   // console.log('mmmmmmmmmmmm')
-  console.log(movements)
+  // console.log(movements)
   // console.log('mmmmmmmmmmmm')
 
   return (
@@ -44,9 +45,9 @@ export default async function MovementsTable({
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    {/* <p className="text-xl font-medium">
-                      {formatCurrency(movement.amount)}
-                    </p> */}
+                    <p className="text-xl font-medium">
+                      {movement.final}
+                    </p>
                     <p>{formatDateToLocal(movement.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
@@ -100,7 +101,7 @@ export default async function MovementsTable({
                     </td>*/}
                   <td className="whitespace-nowrap px-3 py-3">
                     {/* {movement.final} */}
-                    {formatCurrency(movement.final)}
+                    {movement.final}
                   </td> 
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(movement.date)}

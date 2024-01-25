@@ -4,9 +4,9 @@ import { lusitana } from '@/app/ui/fonts';
 import Pagination from '@/app/ui/invoices/pagination';
 import Search from '@/app/ui/search';
 import Table from '@/app/ui/movements/table';
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
+import { MovementsTableSkeleton } from '@/app/ui/skeletonsMovements';
 import { Suspense } from 'react';
-// import { fetchInvoicesPages } from '@/app/lib/data';
+import { fetchMovementsPages } from '@/app/lib/data';
 
 export default async function Page({
   searchParams,
@@ -20,8 +20,8 @@ export default async function Page({
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 
-  // const totalPages = await fetchInvoicesPages(query)
-  // console.log(totalPages)
+  const totalPages = await fetchMovementsPages(query)
+  //  console.log(currentPage)
 
   return (
     <div className="w-full">
@@ -29,13 +29,13 @@ export default async function Page({
         <h1 className={`${lusitana.className} text-2xl`}>Movements</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search invoices..." />
+        <Search placeholder="Search movements..." />
         <CreateMovement />
       </div>
       <div className="mt-5 flex w-full justify-center">
-        {/* <Pagination totalPages={totalPages} /> */}
+        <Pagination totalPages={totalPages} />
       </div>
-      <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
+      <Suspense key={query + currentPage} fallback={<MovementsTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
