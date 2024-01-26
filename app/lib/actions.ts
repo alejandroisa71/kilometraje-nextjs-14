@@ -23,7 +23,6 @@ const FormSchema = z.object({
   date: z.string(),
 });
 
-
 const CreateInvoice = FormSchema.omit({
   id: true,
   date: true,
@@ -34,13 +33,12 @@ export type State = {
     customerId?: string[];
     amount?: string[];
     status?: string[];
-    vehicleId?: string[];
-    final?: string[];
+    // vehicleId?: string[];
+    // final?: string[];
+    // detail?:string[];
   };
   message?: string | null;
 };
-
-
 
 export async function createInvoice(prevState: State, formData: FormData) {
   // Validate form using Zod
@@ -50,8 +48,8 @@ export async function createInvoice(prevState: State, formData: FormData) {
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
- 
-  console.log(validatedFields)
+
+  console.log(validatedFields);
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -59,12 +57,12 @@ export async function createInvoice(prevState: State, formData: FormData) {
       message: 'Missing Fields. Failed to Create Invoice.',
     };
   }
- 
+
   // Prepare data for insertion into the database
   const { customerId, amount, status } = validatedFields.data;
   const amountInCents = amount * 100;
   const date = new Date().toISOString().split('T')[0];
- 
+
   // Insert data into the database
   try {
     await sql`
@@ -77,12 +75,11 @@ export async function createInvoice(prevState: State, formData: FormData) {
       message: 'Database Error: Failed to Create Invoice.',
     };
   }
- 
+
   // Revalidate the cache for the invoices page and redirect the user.
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
-
 
 // Use Zod to update the expected types
 const UpdateInvoiceSchema = z.object({
@@ -99,11 +96,10 @@ const UpdateInvoiceSchema = z.object({
   date: z.string(),
 });
 
-
 const UpdateInvoice = UpdateInvoiceSchema.omit({ id: true, date: true });
- 
+
 // ...
- 
+
 export async function updateInvoice(
   id: string,
   prevState: State,
@@ -116,21 +112,21 @@ export async function updateInvoice(
   });
 
   // console.log(validatedFields);
- 
+
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update Invoice.',
     };
   }
- 
-  const {customerId, amount, status } = validatedFields.data;
+
+  const { customerId, amount, status } = validatedFields.data;
   const amountInCents = amount * 100;
 
   // console.log(prevState)
   // console.log(id)
   // console.log(amount)
- 
+
   try {
     await sql`
       UPDATE invoices
@@ -140,16 +136,15 @@ export async function updateInvoice(
   } catch (error) {
     return { message: 'Database Error: Failed to Update Invoice.' };
   }
- 
+
   revalidatePath('/dashboard/invoices');
-  revalidatePath(`/dashboard/invoices/${id}/edit`)
+  revalidatePath(`/dashboard/invoices/${id}/edit`);
   redirect('/dashboard/invoices');
 }
 
-
 export async function deleteInvoice(id: string) {
   // throw new Error('Failed to Delete Invoice');
- 
+
   // Unreachable code block
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
@@ -160,13 +155,7 @@ export async function deleteInvoice(id: string) {
   }
 }
 
-
-
-
-
 //----movement----
-
-
 
 const FormSchemaMovement = z.object({
   id: z.string(),
@@ -176,14 +165,15 @@ const FormSchemaMovement = z.object({
   final: z.coerce
     .number()
     .gt(0, { message: 'Please enter an final greater than 0.' }),
+  // detail: z.string({
+  //   invalid_type_error: 'Please select a Detail for movement.',
+  // }),
+  detail:z.string().min(6, {message: 'Must be at least 2 characters'}),
   status: z.enum(['pending', 'paid'], {
     invalid_type_error: 'Please select an movement status.',
   }),
   date: z.string(),
 });
-
-
-
 
 const CreateMovement = FormSchemaMovement.omit({
   id: true,
@@ -195,21 +185,23 @@ export type StateMovement = {
     vehicleId?: string[];
     final?: string[];
     status?: string[];
+    detail?: string[];
   };
   message?: string | null;
 };
 
-
-
-
-export async function createMovement(prevState: State, formData: FormData) {
+export async function createMovement(
+  prevState: StateMovement,
+  formData: FormData,
+) {
   // Validate form using Zod
   const validatedFields = CreateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
     final: formData.get('final'),
+    detail: formData.get('detail'),
     status: formData.get('status'),
   });
- 
+
   // console.log(validatedFields)
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
@@ -218,32 +210,30 @@ export async function createMovement(prevState: State, formData: FormData) {
       message: 'Missing Fields. Failed to Create Movement.',
     };
   }
- 
+
   // Prepare data for insertion into the database
-  const { vehicleId, final, status } = validatedFields.data;
+  const { vehicleId, final, detail, status } = validatedFields.data;
   // const finalInCents = final * 100;
   const date = new Date().toISOString().split('T')[0];
- 
+
   // Insert data into the database
   try {
     // console.log('pasooooo')
-     await sql`
+    await sql`
       INSERT INTO movements (vehicle_id, final, status, date)
-      VALUES (${vehicleId}, ${final}, ${status}, ${date})
+      VALUES (${vehicleId}, ${final}, ${status}, ${detail} ${date})
     `;
-
   } catch (error) {
     // If a database error occurs, return a more specific error.
     return {
       message: 'Database Error: Failed to Create Movement.',
     };
   }
- 
+
   // Revalidate the cache for the invoices page and redirect the user.
   revalidatePath('/dashboard/movement');
   redirect('/dashboard/movement');
 }
-
 
 // Use Zod to update the expected types
 const UpdateMovementSchema = z.object({
@@ -254,17 +244,16 @@ const UpdateMovementSchema = z.object({
   final: z.coerce
     .number()
     .gt(0, { message: 'Please enter an final greater than 0.' }),
-    status: z.enum(['pending', 'paid'], {
-      invalid_type_error: 'Please select an invoice status.',
-    }),
-    date: z.string(),
+  status: z.enum(['pending', 'paid'], {
+    invalid_type_error: 'Please select an invoice status.',
+  }),
+  date: z.string(),
 });
 
-
 const UpdateMovement = UpdateMovementSchema.omit({ id: true, date: true });
- 
+
 // ...
- 
+
 export async function updateMovement(
   id: string,
   prevState: State,
@@ -277,18 +266,16 @@ export async function updateMovement(
   });
 
   // console.log(validatedFields);
- 
+
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Update Movement.',
     };
   }
- 
-  const {vehicleId, final, status } = validatedFields.data;
 
- 
- 
+  const { vehicleId, final, status } = validatedFields.data;
+
   try {
     await sql`
       UPDATE movements
@@ -298,16 +285,15 @@ export async function updateMovement(
   } catch (error) {
     return { message: 'Database Error: Failed to Update Movement.' };
   }
- 
+
   revalidatePath('/dashboard/movement');
-  revalidatePath(`/dashboard/movement/${id}/edit`)
+  revalidatePath(`/dashboard/movement/${id}/edit`);
   redirect('/dashboard/movement');
 }
 
-
 export async function deleteMovement(id: string) {
   // throw new Error('Failed to Delete Invoice');
- 
+
   // Unreachable code block
   try {
     await sql`DELETE FROM movements WHERE id = ${id}`;

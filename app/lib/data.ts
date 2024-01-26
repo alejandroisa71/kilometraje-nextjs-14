@@ -405,12 +405,13 @@ export async function fetchMovementById(id: string) {
         movements.id,
         movements.vehicle_id,
         movements.final,
+        movements.status
       FROM movements
       WHERE movements.id = ${id};
     `;
 
-    const movement = data.rows.map((invoice) => ({
-      ...invoice,
+    const movement = data.rows.map((movement) => ({
+      ...movement,
       // Convert amount from cents to dollars
       // amount: invoice.amount / 100,
     }));

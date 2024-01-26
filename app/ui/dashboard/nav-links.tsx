@@ -6,6 +6,11 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { FaCarSide, FaGasPump } from "react-icons/fa";
+import { GiAutoRepair } from "react-icons/gi";
+import { BiSolidAmbulance } from "react-icons/bi";
+import { TbAlarmAverage } from "react-icons/tb";
+
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -16,13 +21,14 @@ const links = [
     href: '/dashboard/invoices',
     icon: DocumentDuplicateIcon,
   },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Vehicle', href: '/dashboard/vehicle', icon: UserGroupIcon },
-  { name: 'Movements', href: '/dashboard/movement', icon: UserGroupIcon },
-  { name: 'Fuel', href: '/dashboard/fuel', icon: UserGroupIcon },
-  { name: 'Maintenance', href: '/dashboard/maintenance', icon: UserGroupIcon },
-  { name: 'Average', href: '/dashboard/average', icon: UserGroupIcon },
+  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon},
+  { name: 'Vehicle', href: '/dashboard/vehicle', icon: BiSolidAmbulance },
+  { name: 'Movements', href: '/dashboard/movement', icon: FaCarSide },
+  { name: 'Fuel', href: '/dashboard/fuel', icon: FaGasPump },
+  { name: 'Maintenance', href: '/dashboard/maintenance', icon: GiAutoRepair },
+  { name: 'Average', href: '/dashboard/average', icon: TbAlarmAverage },
 ];
+
 
 export default function NavLinks() {
   const pathname =usePathname()

@@ -5,6 +5,9 @@ import RevenueChart from "../ui/dashboard/revenue-chart";
 import { lusitana } from "../ui/fonts";
 import { LatestInvoicesSkeleton, RevenueChartSkeleton } from "../ui/skeletons";
 
+
+
+
 const Page = async() => {
   // const revenue = await fetchRevenue();
   // const latestInvoices = await fetchLatestInvoices()
