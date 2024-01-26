@@ -1,5 +1,5 @@
 
-const Move = () => {
+const MotionPage = () => {
   return (
     <div>Movement Page</div>
   )
