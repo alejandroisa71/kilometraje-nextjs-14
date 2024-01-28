@@ -17,7 +17,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
 
   return (
     <form action={dispatch}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+      <div className="rounded-md bg-gray-50 p-4 md:p-3">
         {/* Vehicle Name */}
         <div className="mb-4">
           <label htmlFor="vehicle" className="mb-2 block text-sm font-medium">
@@ -51,63 +51,286 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
               ))}
           </div>
         </div>
+        <div className=" gap-x-8 md:flex">
+          <div className="mb-4">
+            <label htmlFor="final" className="mb-2 block text-sm font-medium">
+              Choose an Initial
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="initial"
+                  name="initial"
+                  type="number"
+                  placeholder="Enter initial"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.final &&
+              state.errors.final.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
 
-        {/* movements Amount */}
-        <div className="mb-4">
-          <label htmlFor="final" className="mb-2 block text-sm font-medium">
-            Choose an final
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="final"
-                name="final"
-                type="number"
-                placeholder="Enter final"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+          {/* movements Amount */}
+          <div className="mb-4">
+            <label htmlFor="final" className="mb-2 block text-sm font-medium">
+              Choose an final
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="final"
+                  name="final"
+                  type="number"
+                  placeholder="Enter final"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.final &&
+              state.errors.final.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="final" className="mb-2 block text-sm font-medium">
+              Route
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="route"
+                  name="route"
+                  type="number"
+                  placeholder="Enter route"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.final &&
+              state.errors.final.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
+        </div>
+
+        <div className="gap-x-2 md:flex">
+          <div className="mb-4 w-full">
+            <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+              Choose an Detail
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="detail"
+                  name="detail"
+                  type="string"
+                  placeholder="Enter detail"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.detail &&
+              state.errors.detail.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
+
+          <div className="mb-4 w-full">
+            <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+              Choose an New
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="new"
+                  name="new"
+                  type="string"
+                  placeholder="Enter New"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.detail &&
+              state.errors.detail.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
+        </div>
+
+        <div className="gap-x-2 md:flex">
+          <div className="mb-4 w-full">
+            <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+              Choose an Location Origin
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="origin"
+                  name="origin"
+                  type="string"
+                  placeholder="Enter Origin"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+            <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.detail &&
+                state.errors.detail.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
+
+            <div className="mb-4 w-full">
+              <label
+                htmlFor="detail"
+                className="mb-2 block text-sm font-medium"
+              >
+                Choose an Province Origin
+              </label>
+              <div className="realtive mt-1 rounded-md">
+                <div className="relative">
+                  <input
+                    id="prov-destintation"
+                    name="prov-destination"
+                    type="string"
+                    placeholder="Enter Destination"
+                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  />
+                  {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+                </div>
+              </div>
+            </div>
+            <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.detail &&
+                state.errors.detail.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
             </div>
           </div>
         </div>
-        <div id="vehicle-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.final &&
-            state.errors.final.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-              </p>
-            ))}
+
+        <div className="gap-x-2 md:flex">
+          <div className="mb-4 w-full">
+            <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+              Choose an Location Destination
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="loc-destination"
+                  name="loc-destination"
+                  type="string"
+                  placeholder="Enter Origin"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.detail &&
+              state.errors.detail.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
+
+          <div className="mb-4 w-full">
+            <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+              Choose an Province Destination
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="prov-destintation"
+                  name="prov-destination"
+                  type="string"
+                  placeholder="Enter Destination"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              </div>
+            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.detail &&
+              state.errors.detail.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
         </div>
 
         <div className="mb-4">
-          <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-            Choose an Detail
+          <label htmlFor="vehicle" className="mb-2 block text-sm font-medium">
+            Choose vehicle
           </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="detail"
-                name="detail"
-                type="string"
-                placeholder="Enter detail"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
-            </div>
+          <div className="relative">
+            <select
+              id="chofer"
+              name="chofer"
+              className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue=""
+              aria-describedby="vehicle-error"
+            >
+              <option value="" disabled>
+                Select a chofer
+              </option>
+              {vehicles.map((vehicle) => (
+                <option key={vehicle.id} value={vehicle.id}>
+                  {vehicle.patente}
+                </option>
+              ))}
+            </select>
+            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.vehicleId &&
+              state.errors.vehicleId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
-        <div id="vehicle-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.detail &&
-            state.errors.detail.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500" key={error}>
-                {error}
-              </p>
-            ))}
-        </div>
-
-
         {/* movements Status */}
-        <fieldset>
+        {/* <fieldset>
           <legend className="mb-2 block text-sm font-medium">
             Set the invoice status
           </legend>
@@ -153,7 +376,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
                 </p>
               ))}
           </div>
-        </fieldset>
+        </fieldset>*/}
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

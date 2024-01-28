@@ -11,7 +11,7 @@ export default async function Page() {
         breadcrumbs={[
           { label: 'Movements', href: '/dashboard/movement' },
           {
-            label: 'Motion load',
+            label: 'Movement load',
             href: '/dashboard/movement/create',
             active: true,
           },

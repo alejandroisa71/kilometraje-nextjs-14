@@ -32,9 +32,9 @@ export default async function Page({
         <Search placeholder="Search movements..." />
         <CreateMovement />
       </div>
-      <div className="mt-5 flex w-full justify-center">
+      {/* <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
-      </div>
+      </div> */}
       <Suspense key={query + currentPage} fallback={<MovementsTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>

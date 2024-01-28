@@ -16,12 +16,12 @@ import { TbAlarmAverage } from "react-icons/tb";
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
-  },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon},
+  // {
+  //   name: 'Invoices',
+  //   href: '/dashboard/invoices',
+  //   icon: DocumentDuplicateIcon,
+  // },
+  // { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon},
   { name: 'Vehicle', href: '/dashboard/vehicle', icon: BiSolidAmbulance },
   { name: 'Movements', href: '/dashboard/movement', icon: FaCarSide },
   { name: 'Fuel', href: '/dashboard/fuel', icon: FaGasPump },
