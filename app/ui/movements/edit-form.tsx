@@ -73,14 +73,14 @@ export default function EditMovementForm({
             </div>
           </div>
         </div>
-        <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+        {/* <div id="vehicle-error" aria-live="polite" aria-atomic="true">
             {state.errors?.final &&
               state.errors.final.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
               ))}
-          </div>
+          </div> */}
 
         {/* Movement Status */}
         <fieldset>
