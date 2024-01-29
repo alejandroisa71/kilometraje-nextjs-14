@@ -21,7 +21,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
         {/* Vehicle Name */}
         <div className="mb-4">
           <label htmlFor="vehicle" className="mb-2 block text-sm font-medium">
-            Choose vehicle
+             Vehicle
           </label>
           <div className="relative">
             <select
@@ -54,7 +54,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
         <div className=" gap-x-8 md:flex">
           <div className="mb-4">
             <label htmlFor="final" className="mb-2 block text-sm font-medium">
-              Choose an Initial
+            Initial mileage
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -69,19 +69,13 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
               </div>
             </div>
           </div>
-          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.final &&
-              state.errors.final.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
-
+          
           {/* movements Amount */}
+          <div>
+            
           <div className="mb-4">
             <label htmlFor="final" className="mb-2 block text-sm font-medium">
-              Choose an final
+              Final mileage
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -89,8 +83,8 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
                   id="final"
                   name="final"
                   type="number"
-                  placeholder="Enter final"
-                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                  placeholder="Enter km"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm outline-2 placeholder:text-gray-500"
                 />
                 {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
               </div>
@@ -105,9 +99,10 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
               ))}
           </div>
 
+          </div>
           <div className="mb-4">
             <label htmlFor="final" className="mb-2 block text-sm font-medium">
-              Route
+              Tour
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -122,20 +117,13 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
               </div>
             </div>
           </div>
-          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.final &&
-              state.errors.final.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
+          
         </div>
 
         <div className="gap-x-2 md:flex">
           <div className="mb-4 w-full">
             <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-              Choose an Detail
+              Detail
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -161,7 +149,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
 
           <div className="mb-4 w-full">
             <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-              Choose an New
+            Novelties
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -169,7 +157,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
                   id="new"
                   name="new"
                   type="string"
-                  placeholder="Enter New"
+                  placeholder="Enter Noveltys"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 />
                 {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
@@ -189,64 +177,64 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
         <div className="gap-x-2 md:flex">
           <div className="mb-4 w-full">
             <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-              Choose an Location Origin
+             Locality of origin
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
                 <input
-                  id="origin"
-                  name="origin"
+                  id="loc-origin"
+                  name="loc-origin"
                   type="string"
-                  placeholder="Enter Origin"
+                  placeholder="Enter Locality of origin"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 />
                 {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
               </div>
             </div>
-            <div id="vehicle-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.detail &&
-                state.errors.detail.map((error: string) => (
-                  <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
-                  </p>
-                ))}
-            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.detail &&
+              state.errors.detail.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
 
-            <div className="mb-4 w-full">
-              <label
-                htmlFor="detail"
-                className="mb-2 block text-sm font-medium"
-              >
-                Choose an Province Origin
-              </label>
-              <div className="realtive mt-1 rounded-md">
-                <div className="relative">
-                  <input
-                    id="prov-destintation"
-                    name="prov-destination"
-                    type="string"
-                    placeholder="Enter Destination"
-                    className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  />
-                  {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
-                </div>
+          <div className="mb-4 w-full">
+            <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+              Province of Origin
+            </label>
+            <div className="realtive mt-1 rounded-md">
+              <div className="relative">
+                <input
+                  id="prov-origin"
+                  name="prov-origin"
+                  type="string"
+                  placeholder="Enter Province of Origin"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
               </div>
             </div>
-            <div id="vehicle-error" aria-live="polite" aria-atomic="true">
-              {state.errors?.detail &&
-                state.errors.detail.map((error: string) => (
-                  <p className="mt-2 text-sm text-red-500" key={error}>
-                    {error}
-                  </p>
-                ))}
-            </div>
+          </div>
+          <div id="vehicle-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.detail &&
+              state.errors.detail.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
+
+
+        
 
         <div className="gap-x-2 md:flex">
           <div className="mb-4 w-full">
             <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-              Choose an Location Destination
+             Locality of Destination
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -272,7 +260,7 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
 
           <div className="mb-4 w-full">
             <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-              Choose an Province Destination
+               Province of Destination
             </label>
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
@@ -336,7 +324,6 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
           </legend>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
-              <div className="flex items-center">
                 <input
                   id="pending"
                   name="status"
