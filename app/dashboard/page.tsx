@@ -4,6 +4,7 @@ import LatestInvoices from "../ui/dashboard/latest-invoices";
 import RevenueChart from "../ui/dashboard/revenue-chart";
 import { lusitana } from "../ui/fonts";
 import { LatestInvoicesSkeleton, RevenueChartSkeleton } from "../ui/skeletons";
+import LatestMovements from "../ui/dashboard/latest-movements";
 
 
 
@@ -34,7 +35,8 @@ const Page = async() => {
         <RevenueChart/>
         </Suspense>
         <Suspense fallback={<LatestInvoicesSkeleton/>}>
-        <LatestInvoices/>
+        {/* <LatestInvoices/> */}
+        <LatestMovements/>
         </Suspense>
 
       </div>

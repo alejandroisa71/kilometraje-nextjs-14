@@ -107,7 +107,7 @@ export default async function MovementsTable({
                     {formatDateToLocal(movement.date)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {/* <MovementStatus status={movement.status} /> */}
+                    <MovementStatus status={movement.status} />
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">

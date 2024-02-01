@@ -5,6 +5,7 @@ import { lusitana } from '@/app/ui/fonts';
 import { LatestMovement } from '@/app/lib/definitions';
 // import { fetchLatestMovements } from '@/app/lib/data';
 import { fetchLatestMovements } from '@/app/lib/data';
+
 export default async function LatestMovements() {
   const latestMovements = await fetchLatestMovements()  
   

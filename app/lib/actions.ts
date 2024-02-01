@@ -49,7 +49,6 @@ export async function createInvoice(prevState: State, formData: FormData) {
     status: formData.get('status'),
   });
 
-  console.log(validatedFields);
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -168,7 +167,7 @@ const FormSchemaMovement = z.object({
   // detail: z.string({
   //   invalid_type_error: 'Please select a Detail for movement.',
   // }),
-  detail:z.string().min(6, {message: 'Must be at least 2 characters'}),
+  // detail:z.string().min(6, {message: 'Must be at least 2 characters'}),
   status: z.enum(['pending', 'paid'], {
     invalid_type_error: 'Please select an movement status.',
   }),
@@ -185,7 +184,7 @@ export type StateMovement = {
     vehicleId?: string[];
     final?: string[];
     status?: string[];
-    detail?: string[];
+    // detail?: string[];
   };
   message?: string | null;
 };
@@ -198,7 +197,7 @@ export async function createMovement(
   const validatedFields = CreateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
     final: formData.get('final'),
-    detail: formData.get('detail'),
+    // detail: formData.get('detail'),
     status: formData.get('status'),
   });
 
@@ -212,16 +211,15 @@ export async function createMovement(
   }
 
   // Prepare data for insertion into the database
-  const { vehicleId, final, detail, status } = validatedFields.data;
+  const { vehicleId, final, status } = validatedFields.data;
   // const finalInCents = final * 100;
   const date = new Date().toISOString().split('T')[0];
 
   // Insert data into the database
   try {
-    // console.log('pasooooo')
     await sql`
       INSERT INTO movements (vehicle_id, final, status, date)
-      VALUES (${vehicleId}, ${final}, ${status}, ${detail} ${date})
+      VALUES (${vehicleId}, ${final}, ${status}, ${date})
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.

@@ -90,9 +90,15 @@ export type InvoiceForm = {
 
 
 
+export type Vehicle = {
+  id: string;
+  patente: string;
+};
+
+
 export type Movement = {
   id: string;
-  customer_id: string;
+  vehicle_id: string;
   final: number;
   date: string;
   // In TypeScript, this is called a string union type.
@@ -152,11 +158,6 @@ export type VehicleField = {
   patente: string;
 };
 
-
-export type Vehicle = {
-  id: string;
-  patente: string;
-};
 
 
 
