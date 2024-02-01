@@ -5,7 +5,7 @@ const {
   revenue,
   users,
   vehicles,
-  movements
+  movements,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -58,9 +58,22 @@ async function seedMovements(client) {
     CREATE TABLE IF NOT EXISTS movements (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     vehicle_id UUID NOT NULL,
+    date DATE NOT NULL,
+    initial INT NOT NULL,
+    tour INT NOT NULL,
     final INT NOT NULL,
+    service INT,
+    detail VARCHAR(255) NOT NULL,
+    novelties VARCHAR(255),
+    loc-origin VARCHAR(255) NOT NULL,
+    prov-origin VARCHAR(255) NOT NULL,
+    loc-destination VARCHAR(255) NOT NULL,
+    prov-destination VARCHAR(255) NOT NULL,
+    chofer VARCHAR(255) NOT NULL,
+    average VARCHAR(255) NOT NULL,
+    num-average INT, 
+    branch INT,
     status VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
   );
 `;
 
@@ -70,8 +83,8 @@ async function seedMovements(client) {
     const insertedMovements = await Promise.all(
       movements.map(
         (movement) => client.sql`
-        INSERT INTO movements (vehicle_id, final, status, date)
-        VALUES (${movement.vehicle_id}, ${movement.final}, ${movement.status}, ${movement.date})
+        INSERT INTO movements (vehicle_id, date, final, service, detail, novelties, loc-origin, prov-origin, loc-destination, prov-destination, chofer, average, num-average, branch,status)
+        VALUES (${movement.vehicle_id}, ${movement.date}, ${movement.initial}, ${movement.tour},${movement.final}, ${movement.detail}, ${movement.novelties}, ${movement.loc-origin}, ${movement.prov-origin}, ${movement.loc-destination}, ${movement.prov-destination}, ${movement.chofer}, ${movement.average},${movement.num-average}, ${movement.branch}, ${movement.status}, )
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
@@ -88,8 +101,6 @@ async function seedMovements(client) {
     throw error;
   }
 }
-
-
 
 //-----------
 
@@ -130,7 +141,6 @@ async function seedVehicles(client) {
     throw error;
   }
 }
-
 
 //================================================================
 async function seedInvoices(client) {
