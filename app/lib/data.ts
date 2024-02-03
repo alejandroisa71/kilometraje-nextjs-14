@@ -330,11 +330,13 @@ export async function fetchLatestMovements() {
       ORDER BY movements.date DESC
       LIMIT 5`;
 
+    //  console.log(data) 
     // console.log(data.rows)
     const latestMovements = data.rows.map((movement) => ({
       ...movement,
       final: movement.final,
     }));
+    // console.log(latestMovements)
     return latestMovements;
   } catch (error) {
     console.error('Database Error:', error);

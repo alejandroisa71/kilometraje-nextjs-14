@@ -65,15 +65,15 @@ async function seedMovements(client) {
     service INT,
     detail VARCHAR(255) NOT NULL,
     novelties VARCHAR(255),
-    loc-origin VARCHAR(255) NOT NULL,
-    prov-origin VARCHAR(255) NOT NULL,
-    loc-destination VARCHAR(255) NOT NULL,
-    prov-destination VARCHAR(255) NOT NULL,
+    loc_origin VARCHAR(255) NOT NULL,
+    prov_origin VARCHAR(255) NOT NULL,
+    loc_destination VARCHAR(255) NOT NULL,
+    prov_destination VARCHAR(255) NOT NULL,
     chofer VARCHAR(255) NOT NULL,
     average VARCHAR(255) NOT NULL,
-    num-average INT, 
+    num_average INT, 
     branch INT,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL
   );
 `;
 
@@ -83,8 +83,8 @@ async function seedMovements(client) {
     const insertedMovements = await Promise.all(
       movements.map(
         (movement) => client.sql`
-        INSERT INTO movements (vehicle_id, date, final, service, detail, novelties, loc-origin, prov-origin, loc-destination, prov-destination, chofer, average, num-average, branch,status)
-        VALUES (${movement.vehicle_id}, ${movement.date}, ${movement.initial}, ${movement.tour},${movement.final}, ${movement.detail}, ${movement.novelties}, ${movement.loc-origin}, ${movement.prov-origin}, ${movement.loc-destination}, ${movement.prov-destination}, ${movement.chofer}, ${movement.average},${movement.num-average}, ${movement.branch}, ${movement.status}, )
+        INSERT INTO movements (vehicle_id, date, initial, tour, final, detail, novelties, loc_origin, prov_origin, loc_destination, prov_destination, chofer, average, num_average, branch, status)
+        VALUES (${movement.vehicle_id}, ${movement.date}, ${movement.initial}, ${movement.tour}, ${movement.final}, ${movement.detail}, ${movement.novelties}, ${movement.loc_origin}, ${movement.prov_origin}, ${movement.loc_destination}, ${movement.prov_destination}, ${movement.chofer}, ${movement.average}, ${movement.num_average}, ${movement.branch}, ${movement.status})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

@@ -14,7 +14,7 @@ export default async function MovementsTable({
 
   const movements = await fetchFilteredMovements(query, currentPage);
   // console.log('mmmmmmmmmmmm')
-  // console.log(movements)
+  console.log(movements)
   // console.log('mmmmmmmmmmmm')
 
   return (

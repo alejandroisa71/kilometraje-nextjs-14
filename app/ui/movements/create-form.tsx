@@ -182,8 +182,8 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
                 <input
-                  id="loc-origin"
-                  name="loc-origin"
+                  id="loc_origin"
+                  name="loc_origin"
                   type="string"
                   placeholder="Enter Locality of origin"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
@@ -208,8 +208,8 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
                 <input
-                  id="prov-origin"
-                  name="prov-origin"
+                  id="prov_origin"
+                  name="prov_origin"
                   type="string"
                   placeholder="Enter Province of Origin"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
@@ -239,8 +239,8 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
                 <input
-                  id="loc-destination"
-                  name="loc-destination"
+                  id="loc_destination"
+                  name="loc_destination"
                   type="string"
                   placeholder="Enter Origin"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
@@ -265,8 +265,8 @@ export default function Form({ vehicles }: { vehicles: VehicleField[] }) {
             <div className="realtive mt-1 rounded-md">
               <div className="relative">
                 <input
-                  id="prov-destintation"
-                  name="prov-destination"
+                  id="prov_destintation"
+                  name="prov_destination"
                   type="string"
                   placeholder="Enter Destination"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
