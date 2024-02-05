@@ -123,8 +123,8 @@ async function seedVehicles(client) {
     const insertedVehicles = await Promise.all(
       vehicles.map(async (vehicle) => {
         return client.sql`
-        INSERT INTO vehicles (patente, description)
-        VALUES (${vehicle.patente},${vehicle.description})
+        INSERT INTO vehicles (id, patente, description)
+        VALUES (${vehicle.id},${vehicle.patente},${vehicle.description})
         ON CONFLICT (id) DO NOTHING;
       `;
       }),

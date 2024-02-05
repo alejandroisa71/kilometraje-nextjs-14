@@ -128,7 +128,7 @@ export async function fetchFilteredInvoices(
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-    // console.log(invoices)
+    console.log(invoices.rows)
     return invoices.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -369,7 +369,7 @@ export async function fetchFilteredMovements(
         ORDER BY movements.date DESC
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
-        // console.log(movements)
+        // console.log(movements.rows)
     return movements.rows;
   } catch (error) {
 

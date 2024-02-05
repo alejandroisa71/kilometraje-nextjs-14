@@ -33,9 +33,6 @@ export type State = {
     customerId?: string[];
     amount?: string[];
     status?: string[];
-    // vehicleId?: string[];
-    // final?: string[];
-    // detail?:string[];
   };
   message?: string | null;
 };
@@ -161,13 +158,25 @@ const FormSchemaMovement = z.object({
   vehicleId: z.string({
     invalid_type_error: 'Please select a Vehicle.',
   }),
+  initial: z.coerce
+    .number()
+    .gt(0, { message: 'Please enter an initial greater than 0.' }),
   final: z.coerce
     .number()
     .gt(0, { message: 'Please enter an final greater than 0.' }),
+  tour: z.coerce
+    .number()
+    .gt(0, { message: 'Please enter an tour greater than 0.' }),
   // detail: z.string({
   //   invalid_type_error: 'Please select a Detail for movement.',
   // }),
-  // detail:z.string().min(6, {message: 'Must be at least 2 characters'}),
+  detail: z.string().min(6, { message: 'Must be at least 2 characters' }),
+  novelties: z.string().min(6, { message: 'Must be at least 2 characters' }),
+  loc_origin: z.string().min(6, { message: 'Must be at least 2 characters' }),
+  prov_origin: z.string().min(6, { message: 'Must be at least 2 characters' }),
+  loc_destination: z.string().min(6, { message: 'Must be at least 2 characters' }),
+  prov_destination: z.string().min(6, { message: 'Must be at least 2 characters' }),
+  chofer: z.string().min(6, { message: 'Must be at least 2 characters' }),
   status: z.enum(['pending', 'paid'], {
     invalid_type_error: 'Please select an movement status.',
   }),
@@ -183,6 +192,15 @@ export type StateMovement = {
   errors?: {
     vehicleId?: string[];
     final?: string[];
+    initial?: string[];
+    tour?: string[];
+    detail?: string[];
+    novelties?: string[];
+    loc_origin?: string[];
+    prov_origin?: string[];
+    loc_destination?: string[];
+    prov_destination?: string[];
+    chofer?: string[];
     status?: string[];
     // detail?: string[];
   };
@@ -196,12 +214,20 @@ export async function createMovement(
   // Validate form using Zod
   const validatedFields = CreateMovement.safeParse({
     vehicleId: formData.get('vehicleId'),
+    initial: formData.get('initial'),
+    tour: formData.get('tour'),
     final: formData.get('final'),
-    // detail: formData.get('detail'),
+    detail: formData.get('detail'),
+    novelties: formData.get('novelties'),
+    loc_origin: formData.get('loc_origin'),
+    prov_origin: formData.get('prov_origin'),
+    loc_destination: formData.get('loc_destination'),
+    prov_destination: formData.get('prov_destination'),
+    chofer: formData.get('chofer'),
     status: formData.get('status'),
   });
 
-  // console.log(validatedFields)
+  console.log(validatedFields);
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -211,15 +237,16 @@ export async function createMovement(
   }
 
   // Prepare data for insertion into the database
-  const { vehicleId, final, status } = validatedFields.data;
+  const { vehicleId, initial, final, tour, detail, novelties, loc_origin, prov_origin, loc_destination, prov_destination, chofer, status } = validatedFields.data;
   // const finalInCents = final * 100;
   const date = new Date().toISOString().split('T')[0];
 
   // Insert data into the database
   try {
+    // console.log(vehicleId, status, final);
     await sql`
-      INSERT INTO movements (vehicle_id, final, status, date)
-      VALUES (${vehicleId}, ${final}, ${status}, ${date})
+      INSERT INTO movements (vehicle_id, initial, final, tour, detail, novelties, loc_origin, prov_origin, loc_destination, prov_destination, chofer, average, status, date)
+      VALUES (${vehicleId}, ${initial}, ${final}, ${tour}, ${detail}, ${novelties}, ${loc_origin}, ${prov_origin}, ${loc_destination}, ${prov_destination}, ${chofer}, ' ', ${status},  ${date})
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.
@@ -228,7 +255,7 @@ export async function createMovement(
     };
   }
 
-  // Revalidate the cache for the invoices page and redirect the user.
+  // Revalidate the cache for the movement page and redirect the user.
   revalidatePath('/dashboard/movement');
   redirect('/dashboard/movement');
 }
@@ -239,10 +266,10 @@ const UpdateMovementSchema = z.object({
   vehicleId: z.string({
     invalid_type_error: 'Please select a vehicle.',
   }),
-  final: z.coerce
+    final: z.coerce
     .number()
     .gt(0, { message: 'Please enter an final greater than 0.' }),
-  status: z.enum(['pending', 'paid'], {
+    status: z.enum(['pending', 'paid'], {
     invalid_type_error: 'Please select an invoice status.',
   }),
   date: z.string(),
