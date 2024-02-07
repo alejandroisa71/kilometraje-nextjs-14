@@ -197,6 +197,38 @@ const vehicles = [
 ];
 
 
+const chofers = [
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    name: 'Brito Fernando Sergio',
+  },
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442b',
+    name: 'Plaza Jose Luis',
+  }
+]
+
+const localities = [
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    name: 'San Miguel de Tucumán',
+  },
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442b',
+    name: 'Concepción',
+  }
+]
+
+const provinces = [
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    name: 'Tucumán',
+  },
+  {
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442b',
+    name: 'Salta',
+  }
+]
 
 
 
@@ -209,11 +241,11 @@ const movements = [
     final: 1500,
     detail:"Instalar Servicio",
     novelties:"Ninguna",
-    loc_origin:"San Miguel de Tucuman",
-    prov_origin:"Tucuman",
-    loc_destination:"Monteros",
-    prov_destination:"Tucuman",
-    chofer:"Brito Fernando",
+    loc_origin_id:localities[0].id,
+    prov_origin_id:provinces[0].id,
+    loc_destination_id:localities[1].id,
+    prov_destination_id:provinces[0].id,
+    chofer_id:chofers[1].id,
     average:"pending",
     num_average:10,
     branch:5,
@@ -227,11 +259,11 @@ const movements = [
     final: 1500,
     detail:"Instalar Servicio",
     novelties:"Ninguna",
-    loc_origin:"San Miguel de Tucuman",
-    prov_origin:"Tucuman",
-    loc_destination:"Monteros",
-    prov_destination:"Tucuman",
-    chofer:"Brito Fernando",
+    loc_origin_id:localities[0].id,
+    prov_origin_id:provinces[0].id,
+    loc_destination_id:localities[1].id,
+    prov_destination_id:provinces[0].id,
+    chofer_id:chofers[0].id,
     average:"pending",
     num_average:10,
     branch:5,
@@ -245,11 +277,11 @@ const movements = [
     final: 1500,
     detail:"Instalar Servicio",
     novelties:"Ninguna",
-    loc_origin:"San Miguel de Tucuman",
-    prov_origin:"Tucuman",
-    loc_destination:"Monteros",
-    prov_destination:"Tucuman",
-    chofer:"Brito Fernando",
+    loc_origin_id:localities[0].id,
+    prov_origin_id:provinces[0].id,
+    loc_destination_id:localities[1].id,
+    prov_destination_id:provinces[0].id,
+    chofer_id:chofers[0].id,
     average:"pending",
     num_average:10,
     branch:5,
@@ -263,19 +295,20 @@ const movements = [
     final: 1500,
     detail:"Instalar Servicio",
     novelties:"Ninguna",
-    loc_origin:"San Miguel de Tucuman",
-    prov_origin:"Tucuman",
-    loc_destination:"Monteros",
-    prov_destination:"Tucuman",
-    chofer:"Brito Fernando",
+    loc_origin_id:localities[0].id,
+    prov_origin_id:provinces[0].id,
+    loc_destination_id:localities[1].id,
+    prov_destination_id:provinces[0].id,
+    chofer_id:chofers[0].id,
     average:"pending",
     num_average:10,
     branch:5,
     status: 'paid',
   },
-
- 
 ];
+
+
+
 
 module.exports = {
   users,
@@ -284,4 +317,7 @@ module.exports = {
   revenue,
   vehicles,
   movements,
+  chofers,
+  localities,
+  provinces
 };

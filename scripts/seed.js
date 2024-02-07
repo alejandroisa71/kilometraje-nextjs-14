@@ -6,6 +6,9 @@ const {
   users,
   vehicles,
   movements,
+  chofers,
+  localities,
+  provinces
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -65,11 +68,11 @@ async function seedMovements(client) {
     service INT,
     detail VARCHAR(255) NOT NULL,
     novelties VARCHAR(255),
-    loc_origin VARCHAR(255) NOT NULL,
-    prov_origin VARCHAR(255) NOT NULL,
-    loc_destination VARCHAR(255) NOT NULL,
-    prov_destination VARCHAR(255) NOT NULL,
-    chofer VARCHAR(255) NOT NULL,
+    loc_origin_id UUID NOT NULL,
+    prov_origin_id UUID NOT NULL,
+    loc_destination_id UUID NOT NULL,
+    prov_destination_id UUID NOT NULL,
+    chofer_id UUID NOT NULL,
     average VARCHAR(255) NOT NULL,
     num_average INT, 
     branch INT,
@@ -83,8 +86,8 @@ async function seedMovements(client) {
     const insertedMovements = await Promise.all(
       movements.map(
         (movement) => client.sql`
-        INSERT INTO movements (vehicle_id, date, initial, tour, final, detail, novelties, loc_origin, prov_origin, loc_destination, prov_destination, chofer, average, num_average, branch, status)
-        VALUES (${movement.vehicle_id}, ${movement.date}, ${movement.initial}, ${movement.tour}, ${movement.final}, ${movement.detail}, ${movement.novelties}, ${movement.loc_origin}, ${movement.prov_origin}, ${movement.loc_destination}, ${movement.prov_destination}, ${movement.chofer}, ${movement.average}, ${movement.num_average}, ${movement.branch}, ${movement.status})
+        INSERT INTO movements (vehicle_id, date, initial, tour, final, detail, novelties, loc_origin_id, prov_origin_id, loc_destination_id, prov_destination_id, chofer_id, average, num_average, branch, status)
+        VALUES (${movement.vehicle_id}, ${movement.date}, ${movement.initial}, ${movement.tour}, ${movement.final}, ${movement.detail}, ${movement.novelties}, ${movement.loc_origin_id}, ${movement.prov_origin_id}, ${movement.loc_destination_id}, ${movement.prov_destination_id}, ${movement.chofer_id}, ${movement.average}, ${movement.num_average}, ${movement.branch}, ${movement.status})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
@@ -143,6 +146,85 @@ async function seedVehicles(client) {
 }
 
 //================================================================
+
+//Localities
+async function seedLocalities(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "localities" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS localities (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL
+     );
+    `;
+
+    console.log(`Created "localities" table`);
+
+    // Insert data into the "localities" table
+    const insertedLocalities = await Promise.all(
+      localities.map(async (locality) => {
+        return client.sql`
+        INSERT INTO localities (id, name)
+        VALUES (${locality.id},${locality.name})
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedLocalities.length} localities`);
+
+    return {
+      createTable,
+      localities: insertedLocalities,
+    };
+  } catch (error) {
+    console.error('Error seeding localities:', error);
+    throw error;
+  }
+}
+
+//----------------------------------------------------------------
+//Provinces
+async function seedProvinces(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "provinces" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS provinces (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL
+     );
+    `;
+
+    console.log(`Created "provinces" table`);
+
+    // Insert data into the "provinces" table
+    const insertedProvinces = await Promise.all(
+      provinces.map(async (province) => {
+        return client.sql`
+        INSERT INTO provinces (id, name)
+        VALUES (${province.id},${province.name})
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedProvinces.length} provinces`);
+
+    return {
+      createTable,
+      provinces: insertedProvinces,
+    };
+  } catch (error) {
+    console.error('Error seeding provinces:', error);
+    throw error;
+  }
+}
+
+//----------------------------------------------------------------
+
+
 async function seedInvoices(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -222,6 +304,49 @@ async function seedCustomers(client) {
   }
 }
 
+// create chofer table
+
+async function seedChofers(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "chofers" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS chofers (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL
+      );
+    `;
+
+    console.log(`Created "chofers" table`);
+
+    // Insert data into the "chofers" table
+    const insertedChofers = await Promise.all(
+      chofers.map(
+        (chofer) => client.sql`
+        INSERT INTO chofers (id, name)
+        VALUES (${chofer.id}, ${chofer.name})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+      ),
+    );
+
+    console.log(`Seeded ${insertedChofers.length} chofers`);
+
+    return {
+      createTable,
+      chofers: insertedChofers,
+    };
+  } catch (error) {
+    console.error('Error seeding chofers:', error);
+    throw error;
+  }
+}
+
+
+
+// 
+
 async function seedRevenue(client) {
   try {
     // Create the "revenue" table if it doesn't exist
@@ -265,6 +390,9 @@ async function main() {
   await seedInvoices(client);
   await seedRevenue(client);
   await seedVehicles(client);
+  await seedLocalities(client);
+  await seedProvinces(client);
+  await seedChofers(client);
   await seedMovements(client);
 
   await client.end();

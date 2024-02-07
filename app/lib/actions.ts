@@ -167,19 +167,26 @@ const FormSchemaMovement = z.object({
   tour: z.coerce
     .number()
     .gt(0, { message: 'Please enter an tour greater than 0.' }),
-  // detail: z.string({
-  //   invalid_type_error: 'Please select a Detail for movement.',
-  // }),
   detail: z.string().min(6, { message: 'Must be at least 2 characters' }),
   novelties: z.string().min(6, { message: 'Must be at least 2 characters' }),
-  loc_origin: z.string().min(6, { message: 'Must be at least 2 characters' }),
-  prov_origin: z.string().min(6, { message: 'Must be at least 2 characters' }),
-  loc_destination: z.string().min(6, { message: 'Must be at least 2 characters' }),
-  prov_destination: z.string().min(6, { message: 'Must be at least 2 characters' }),
-  chofer: z.string().min(6, { message: 'Must be at least 2 characters' }),
-  status: z.enum(['pending', 'paid'], {
-    invalid_type_error: 'Please select an movement status.',
+  loc_originId: z.string({
+    invalid_type_error: 'Please select a Locality.',
   }),
+  prov_originId: z.string({
+    invalid_type_error: 'Please select a Province.',
+  }),
+  loc_destinationId: z.string({
+    invalid_type_error: 'Please select a Locality.',
+  }),
+  prov_destinationId: z.string({
+    invalid_type_error: 'Please select a Province.',
+  }),
+  choferId: z.string({
+    invalid_type_error: 'Please select a Chofer.',
+  }),
+  // status: z.enum(['pending', 'paid'], {
+  //   invalid_type_error: 'Please select an movement status.',
+  // }),
   date: z.string(),
 });
 
@@ -196,12 +203,12 @@ export type StateMovement = {
     tour?: string[];
     detail?: string[];
     novelties?: string[];
-    loc_origin?: string[];
-    prov_origin?: string[];
-    loc_destination?: string[];
-    prov_destination?: string[];
-    chofer?: string[];
-    status?: string[];
+    loc_originId?: string[];
+    prov_originId?: string[];
+    loc_destinationId?: string[];
+    prov_destinationId?: string[];
+    choferId?: string[];
+    // status?: string[];
     // detail?: string[];
   };
   message?: string | null;
@@ -219,15 +226,15 @@ export async function createMovement(
     final: formData.get('final'),
     detail: formData.get('detail'),
     novelties: formData.get('novelties'),
-    loc_origin: formData.get('loc_origin'),
-    prov_origin: formData.get('prov_origin'),
-    loc_destination: formData.get('loc_destination'),
-    prov_destination: formData.get('prov_destination'),
-    chofer: formData.get('chofer'),
-    status: formData.get('status'),
+    loc_originId: formData.get('loc_originId'),
+    prov_originId: formData.get('prov_originId'),
+    loc_destinationId: formData.get('loc_destinationId'),
+    prov_destinationId: formData.get('prov_destinationId'),
+    choferId: formData.get('choferId'),
+    // status: formData.get('status'),
   });
 
-  console.log(validatedFields);
+  // console.log(validatedFields);
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
@@ -237,16 +244,29 @@ export async function createMovement(
   }
 
   // Prepare data for insertion into the database
-  const { vehicleId, initial, final, tour, detail, novelties, loc_origin, prov_origin, loc_destination, prov_destination, chofer, status } = validatedFields.data;
+  const {
+    vehicleId,
+    initial,
+    final,
+    tour,
+    detail,
+    novelties,
+    loc_originId,
+    prov_originId,
+    loc_destinationId,
+    prov_destinationId,
+    choferId,
+    // status,
+  } = validatedFields.data;
   // const finalInCents = final * 100;
   const date = new Date().toISOString().split('T')[0];
 
   // Insert data into the database
   try {
     // console.log(vehicleId, status, final);
-    await sql`
-      INSERT INTO movements (vehicle_id, initial, final, tour, detail, novelties, loc_origin, prov_origin, loc_destination, prov_destination, chofer, average, status, date)
-      VALUES (${vehicleId}, ${initial}, ${final}, ${tour}, ${detail}, ${novelties}, ${loc_origin}, ${prov_origin}, ${loc_destination}, ${prov_destination}, ${chofer}, ' ', ${status},  ${date})
+     await sql`
+      INSERT INTO movements (vehicle_id, initial, final, tour, detail, novelties, loc_origin_id, prov_origin_id, loc_destination_id, prov_destination_id, chofer_id, average, date)
+      VALUES (${vehicleId}, ${initial}, ${final}, ${tour}, ${detail}, ${novelties}, ${loc_originId}, ${prov_originId}, ${loc_destinationId}, ${prov_destinationId}, ${choferId}, ' ')
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.
@@ -266,10 +286,10 @@ const UpdateMovementSchema = z.object({
   vehicleId: z.string({
     invalid_type_error: 'Please select a vehicle.',
   }),
-    final: z.coerce
+  final: z.coerce
     .number()
     .gt(0, { message: 'Please enter an final greater than 0.' }),
-    status: z.enum(['pending', 'paid'], {
+  status: z.enum(['pending', 'paid'], {
     invalid_type_error: 'Please select an invoice status.',
   }),
   date: z.string(),

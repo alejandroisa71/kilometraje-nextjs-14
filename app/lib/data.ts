@@ -14,6 +14,9 @@ import {
   MovementForm,
   MovementsTable,
   LatestMovementRaw,
+  ChoferField,
+  localityField,
+  provinceField
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -263,6 +266,8 @@ export async function getVehicles() {
   }
 }
 
+
+
 export async function fetchVehicles() {
   try {
     const data = await sql<VehicleField>`
@@ -280,7 +285,6 @@ export async function fetchVehicles() {
     throw new Error('Failed to fetch all vehicles.');
   }
 }
-
 
 
 
@@ -424,5 +428,113 @@ export async function fetchMovementById(id: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch movement.');
+  }
+}
+
+
+export async function fetchChofers() {
+  try {
+    const data = await sql<ChoferField>`
+      SELECT
+        id,
+        name
+      FROM chofers
+      ORDER BY name ASC
+    `;
+
+    const chofers = data.rows;
+    return chofers;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all chofers.');
+  }
+}
+
+export async function getChofers() {
+  try {
+    const data = await sql<ChoferField>`
+      SELECT
+        id,
+        name
+      FROM chofers
+      ORDER BY name ASC
+    `;
+
+    const chofers = data.rows;
+    return chofers;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all chofers.');
+  }
+}
+
+export async function getLocalities() {
+  try {
+    const data = await sql<localityField>`
+      SELECT
+        id,
+        name
+      FROM localities
+      ORDER BY name ASC
+    `;
+
+    const localities = data.rows;
+    return localities;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all localities.');
+  }
+}
+export async function fetchLocalities() {
+  try {
+    const data = await sql<localityField>`
+      SELECT
+        id,
+        name
+      FROM localities
+      ORDER BY name ASC
+    `;
+
+    const localities = data.rows;
+    return localities;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all localities.');
+  }
+}
+
+
+export async function getProvinces() {
+  try {
+    const data = await sql<provinceField>`
+      SELECT
+        id,
+        name
+      FROM provinces
+      ORDER BY name ASC
+    `;
+
+    const provinces = data.rows;
+    return provinces;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all provinces.');
+  }
+}
+export async function fetchProvinces() {
+  try {
+    const data = await sql<provinceField>`
+      SELECT
+        id,
+        name
+      FROM provinces
+      ORDER BY name ASC
+    `;
+
+    const provinces = data.rows;
+    return provinces;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all provinces.');
   }
 }

@@ -95,6 +95,11 @@ export type Vehicle = {
   patente: string;
 };
 
+export type Chofer = {
+  id: string;
+  name: string;
+};
+
 
 export type Movement = {
   id: string;
@@ -157,6 +162,22 @@ export type VehicleField = {
   id: string;
   patente: string;
 };
+
+export type ChoferField = {
+  id: string;
+  name: string;
+};
+
+export type localityField = {
+  id: string;
+  name: string;
+};
+
+export type provinceField = {
+  id: string;
+  name: string;
+};
+
 
 
 
