@@ -265,8 +265,8 @@ export async function createMovement(
   try {
     // console.log(vehicleId, status, final);
      await sql`
-      INSERT INTO movements (vehicle_id, initial, final, tour, detail, novelties, loc_origin_id, prov_origin_id, loc_destination_id, prov_destination_id, chofer_id, average, date)
-      VALUES (${vehicleId}, ${initial}, ${final}, ${tour}, ${detail}, ${novelties}, ${loc_originId}, ${prov_originId}, ${loc_destinationId}, ${prov_destinationId}, ${choferId}, ' ')
+      INSERT INTO movements (vehicle_id, initial, final, tour, detail, novelties, loc_origin_id, prov_origin_id, loc_destination_id, prov_destination_id, chofer_id, average, status, date)
+      VALUES (${vehicleId}, ${initial}, ${final}, ${tour}, ${detail}, ${novelties}, ${loc_originId}, ${prov_originId}, ${loc_destinationId}, ${prov_destinationId}, ${choferId}, ' ', 'paid', ${date})
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.
