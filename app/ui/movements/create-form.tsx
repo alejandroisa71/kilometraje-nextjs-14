@@ -449,7 +449,7 @@ export default function Form({
         >
           Cancel
         </Link>
-        <Button type="submit">Create movements</Button>
+        <Button type="submit">Create movement</Button>
       </div>
     </form>
   );

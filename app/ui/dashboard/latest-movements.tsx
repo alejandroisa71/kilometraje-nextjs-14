@@ -8,7 +8,7 @@ import { fetchLatestMovements } from '@/app/lib/data';
 
 export default async function LatestMovements() {
   const latestMovements = await fetchLatestMovements()  
-  console.log(latestMovements)
+  // console.log(latestMovements)
   
   return (
     <div className="flex w-full flex-col md:col-span-4">

@@ -10,7 +10,7 @@ export default async function Page() {
 //   console.log(vehicles)
 //   console.log(chofers)
 //  console.log(localities)
-console.log(provinces)
+// console.log(provinces)
 
   return (
     <main>

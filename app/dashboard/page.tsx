@@ -5,6 +5,8 @@ import RevenueChart from "../ui/dashboard/revenue-chart";
 import { lusitana } from "../ui/fonts";
 import { LatestInvoicesSkeleton, RevenueChartSkeleton } from "../ui/skeletons";
 import LatestMovements from "../ui/dashboard/latest-movements";
+import {auth} from '../../auth'
+import { redirect } from "next/navigation";
 
 
 
@@ -14,6 +16,11 @@ const Page = async() => {
   // const latestInvoices = await fetchLatestInvoices()
   // console.log(latestInvoices);
   
+  const session = await auth()
+  if (!session){
+    redirect('/login')
+  }
+
   ;
   return (
     <main>
