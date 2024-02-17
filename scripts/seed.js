@@ -127,7 +127,7 @@ async function seedVehicles(client) {
       vehicles.map(async (vehicle) => {
         return client.sql`
         INSERT INTO vehicles (id, patente, description)
-        VALUES (${vehicle.id},${vehicle.patente},${vehicle.description})
+        VALUES (${vehicle.id}, ${vehicle.patente}, ${vehicle.description})
         ON CONFLICT (id) DO NOTHING;
       `;
       }),

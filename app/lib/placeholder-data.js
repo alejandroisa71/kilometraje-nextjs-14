@@ -5,7 +5,7 @@
 // https://nextjs.org/learn/dashboard-app/fetching-data
 const users = [
   {
-    id: '410544b2-4001-4271-9855-fec4b6a6442a',
+    id: '410544b2-4001-4271-9855-fec4b6a6442c',
     name: 'User',
     email: 'user@nextmail.com',
     password: '123456',
@@ -185,12 +185,12 @@ const revenue = [
 
 const vehicles = [
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6443a',
     patente: 'NBA124',
     description: 'FIAT DOBBLO 1.4 2013',
   },
   {
-    id: '13D07535-C59E-4157-A011-F8D2EF4E0CBB',
+    id: '13D07535-C59E-4157-A011-F8D2EF4E0CBC',
     patente: 'NGU065',
     description: 'RENAULT MASTER 2.0 2013',
   },
@@ -199,7 +199,7 @@ const vehicles = [
 
 const chofers = [
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442f',
     name: 'Brito Fernando Sergio',
   },
   {
@@ -210,7 +210,7 @@ const chofers = [
 
 const localities = [
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6447a',
     name: 'San Miguel de Tucumán',
   },
   {
@@ -221,11 +221,11 @@ const localities = [
 
 const provinces = [
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442d',
     name: 'Tucumán',
   },
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442b',
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6445b',
     name: 'Salta',
   }
 ]

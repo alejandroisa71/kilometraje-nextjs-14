@@ -264,7 +264,7 @@ export async function createMovement(
   // Insert data into the database
   try {
     // console.log(vehicleId, status, final);
-     await sql`
+    await sql`
       INSERT INTO movements (vehicle_id, initial, final, tour, detail, novelties, loc_origin_id, prov_origin_id, loc_destination_id, prov_destination_id, chofer_id, average, status, date)
       VALUES (${vehicleId}, ${initial}, ${final}, ${tour}, ${detail}, ${novelties}, ${loc_originId}, ${prov_originId}, ${loc_destinationId}, ${prov_destinationId}, ${choferId}, ' ', 'paid', ${date})
     `;
@@ -348,7 +348,7 @@ export async function deleteMovement(id: string) {
     return { message: 'Database Error: Failed to Delete Movement' };
   }
 }
-//----movement----
+//----authenticate----
 
 export async function authenticate(
   prevState: string | undefined,
@@ -368,3 +368,147 @@ export async function authenticate(
     throw error;
   }
 }
+
+//----vehicle----
+
+const FormSchemaVehicle = z.object({
+  id: z.string(),
+  patente: z.string().min(6, { message: 'Must be at least 6 characters' }),
+  description: z.string().min(12, { message: 'Must be at least 12 characters' }),
+});
+// date: z.string(),
+// status: z.enum(['pending', 'paid'], {
+//   invalid_type_error: 'Please select an movement status.',
+// }),
+
+const CreateVehicle = FormSchemaVehicle.omit({
+  id: true,
+});
+// date: true,
+
+export type StateVehicle = {
+  errors?: {
+    patente?: string[];
+    description?: string[];
+    // status?: string[];
+    // detail?: string[];
+  };
+  message?: string | null;
+};
+
+export async function createVehicle(
+  prevState: StateVehicle,
+  formData: FormData,
+) {
+  // Validate form using Zod
+  const validatedFields = CreateVehicle.safeParse({
+    patente: formData.get('patente'),
+    description: formData.get('description'),
+    // status: formData.get('status'),
+  });
+
+  // console.log(validatedFields);
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Vehicle.',
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const {
+    patente,
+    description,
+  } = validatedFields.data;
+  // status,
+  // const finalInCents = final * 100;
+  // const date = new Date().toISOString().split('T')[0];
+
+  // Insert data into the database
+  try {
+     console.log(typeof patente, description);
+    await sql`
+      INSERT INTO vehicles (patente, description)
+      VALUES (${patente}, ${description})
+    `;
+  } catch (error) {
+    // If a database error occurs, return a more specific error.
+    return {
+      message: 'Database Error: Failed to Create Vehicle.',
+    };
+  }
+
+  // Revalidate the cache for the movement page and redirect the user.
+  revalidatePath('/dashboard/vehicle');
+  redirect('/dashboard/vehicle');
+}
+
+// Use Zod to update the expected types
+// const UpdateMovementSchema = z.object({
+//   id: z.string(),
+//   vehicleId: z.string({
+//     invalid_type_error: 'Please select a vehicle.',
+//   }),
+//   final: z.coerce
+//     .number()
+//     .gt(0, { message: 'Please enter an final greater than 0.' }),
+//   status: z.enum(['pending', 'paid'], {
+//     invalid_type_error: 'Please select an invoice status.',
+//   }),
+//   date: z.string(),
+// });
+
+// const UpdateMovement = UpdateMovementSchema.omit({ id: true, date: true });
+
+// // ...
+
+// export async function updateMovement(
+//   id: string,
+//   prevState: State,
+//   formData: FormData,
+// ) {
+//   const validatedFields = UpdateMovement.safeParse({
+//     vehicleId: formData.get('vehicleId'),
+//     final: formData.get('final'),
+//     status: formData.get('status'),
+//   });
+
+//   // console.log(validatedFields);
+
+//   if (!validatedFields.success) {
+//     return {
+//       errors: validatedFields.error.flatten().fieldErrors,
+//       message: 'Missing Fields. Failed to Update Movement.',
+//     };
+//   }
+
+//   const { vehicleId, final, status } = validatedFields.data;
+
+//   try {
+//     await sql`
+//       UPDATE movements
+//       SET vehicle_id = ${vehicleId}, final = ${final}, status = ${status}
+//       WHERE id = ${id}
+//     `;
+//   } catch (error) {
+//     return { message: 'Database Error: Failed to Update Movement.' };
+//   }
+
+//   revalidatePath('/dashboard/movement');
+//   revalidatePath(`/dashboard/movement/${id}/edit`);
+//   redirect('/dashboard/movement');
+// }
+
+// export async function deleteMovement(id: string) {
+//   // throw new Error('Failed to Delete Invoice');
+
+//   // Unreachable code block
+//   try {
+//     await sql`DELETE FROM movements WHERE id = ${id}`;
+//     revalidatePath('/dashboard/movement');
+//     return { message: 'Deleted Movement' };
+//   } catch (error) {
+//     return { message: 'Database Error: Failed to Delete Movement' };
+//   }
+// }

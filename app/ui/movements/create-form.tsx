@@ -16,7 +16,7 @@ import { Button } from '@/app/ui/button';
 import { createMovement } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 
-export default function Form({
+export default function MovementForm({
   vehicles,
   chofers,
   localities,
@@ -30,6 +30,7 @@ export default function Form({
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createMovement, initialState);
   // console.log(state.errors);
+  console.log(vehicles);
 
   return (
     <form action={dispatch}>

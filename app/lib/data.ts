@@ -267,29 +267,25 @@ export async function getVehicles() {
 }
 
 
-
 export async function fetchVehicles() {
   try {
     const data = await sql<VehicleField>`
-      SELECT
+      SELECT    
         id,
-        patente
+        patente,
+        description
       FROM vehicles
       ORDER BY patente ASC
     `;
 
     const vehicles = data.rows;
+    // console.log(data.rows)
     return vehicles;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all vehicles.');
   }
 }
-
-
-
-
-
 
 export async function fetchFilteredVehicles(query: string) {
   try {
@@ -314,7 +310,7 @@ export async function fetchFilteredVehicles(query: string) {
       total_pending: vehicle.total_pending,
       total_paid: vehicle.total_paid,
     }));
-
+    console.log(vehicles);
     return vehicles;
   } catch (err) {
     console.error('Database Error:', err);
@@ -373,7 +369,6 @@ export async function fetchFilteredMovements(
         ORDER BY movements.date DESC
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
-        // console.log(movements.rows)
     return movements.rows;
   } catch (error) {
 
@@ -536,5 +531,22 @@ export async function fetchProvinces() {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all provinces.');
+  }
+}
+
+export async function fetchVehiclesPages(query: string) {
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM vehicles
+    WHERE
+      vehicles.patente ILIKE ${`%${query}%`} 
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    console.log(totalPages);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of vehicles.');
   }
 }
