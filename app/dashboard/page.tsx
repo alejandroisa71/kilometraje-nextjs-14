@@ -20,6 +20,9 @@ const Page = async() => {
   if (!session){
     redirect('/login')
   }
+  else{
+    console.log(session)
+  }
 
   ;
   return (
