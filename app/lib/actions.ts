@@ -370,6 +370,11 @@ export async function authenticate(
   }
 }
 
+export const FormSchemaLogin = z.object({
+name: z.string(),
+password:z.string()
+})
+
 //----vehicle----
 
 const FormSchemaVehicle = z.object({
